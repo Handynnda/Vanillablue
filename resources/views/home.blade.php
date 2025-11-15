@@ -117,14 +117,14 @@
 <!-- SECTION LIST HARGA -->
 <section id="listharga">
   <div class="social-card" 
-    style="padding: 50px;
-    padding-left: 350px; 
-    padding-right: 350px;
-    padding-top: 200px;
-    padding-bottom: 200px;
-    text-align: center; 
-    max-width: 100%; 
-    margin: 0 auto;">
+        style="padding: 50px;
+        padding-left: 350px; 
+        padding-right: 350px;
+        padding-top: 200px;
+        padding-bottom: 200px;
+        text-align: center; 
+        max-width: 100%; 
+        margin: 0 auto;">
       <div>
         <h5>Klik Harga Paket-Paket di Vanillablue Photostudio</h5>
         <a href="listharga" class="btn btn-warning">Lihat Harga</a>

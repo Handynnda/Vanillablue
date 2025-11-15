@@ -1,7 +1,4 @@
-@include ('header')
 
-<style>
-/* === GLOBAL === */
 body { 
   font-family: 'Poppins', sans-serif;
   background-color: #f9f9f9;
@@ -29,7 +26,6 @@ body {
   margin-bottom: 40px;
 }
 
-/* === GRID FOTO === */
 .grid-galeri {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* ukuran besar */
@@ -61,6 +57,7 @@ body {
 }
 
 
+/* === TOMBOL KEMBALI === */
 .back-button {
   display: block;
   text-align: center;
@@ -215,52 +212,3 @@ body {
 .btn-sosmed:hover {
   opacity: 0.9;
 }
-</style>
-
-<section class="galeri-detail">
-  <div class="container">
-    <h1>Galeri Foto Baby</h1>
-    <p class="subtitle">Koleksi foto-foto Bayi terbaik dari Vanillablue Photostudio</p>
-
-    <div class="grid-galeri">
-      <img src="assets/images/baby/baby1.jpg" alt="Bayi 1">
-      <img src="assets/images/baby/baby2.jpg" alt="Bayi 2">
-      <img src="assets/images/baby/baby3.jpg" alt="Bayi 3">
-      <img src="assets/images/baby/baby4.jpg" alt="Bayi 4">
-      <img src="assets/images/baby/baby5.jpg" alt="Bayi 5">
-      <img src="assets/images/baby/baby6.jpg" alt="Bayi 6">
-    </div>
-
-    <a href="/#galeri" class="back-button">← Kembali ke Galeri Utama</a>
-  </div>
-</section>
-
-<section class="harga-section">
-  <h2>List Harga Foto Baby</h2>
-
-  <div class="harga-list">
-    <div class="harga-card">
-      <p class="kategori">BABY & KIDS</p>
-      <ul>
-        <li>15 menit</li>
-        <li>All file google drive</li>
-        <li>10 edit</li>
-      </ul>
-      <p class="harga">IDR 200.000</p>
-      <a href="/booking" class="btn-booking">BOOKING</a>
-    </div>
-  </div>
-</section>
-
-<section class="update-section">
-  <div class="update-box">
-    <h3>Jangan Sampe Ketinggalan<br>Update Terbaru Kami !</h3>
-    <p>Follow sosial media kami untuk melihat koleksi terbaru dan tips fotografi.</p>
-    <div class="update-btns">
-      <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-sosmed tiktok">TIKTOK</a>
-      <a href="https://www.instagram.com/vanillablue_photostudio/" target="_blank" class="btn-sosmed instagram">INSTAGRAM</a>
-    </div>
-  </div>
-</section>
-
-@include ('footer')

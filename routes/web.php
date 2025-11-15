@@ -13,7 +13,10 @@ Route::get('/contact',function(){return view('contact');});
 Route::get('/footer',function(){return view('footer');});
 Route::get('/header',function(){return view('header');});
 
-Route::get('/galeri/galeri',function(){return view('galeri');});
+
+
+//tampilan galeri buat 1 aja, nanti isinya di bagi2 sesuai kategori
+Route::get('/galeri/detail',function(){return view('galeri.viewGaleri');});
 Route::get('/galeri/baby',function(){return view('galeri.galeribaby');});
 Route::get('/galeri/birthday',function(){return view('galeri.galeribirthday');});
 Route::get('/galeri/couple',function(){return view('galeri.galericouple');});
