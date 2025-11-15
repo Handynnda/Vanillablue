@@ -607,6 +607,11 @@ body {
 }
 
 /* ===== Pricing Page ===== */
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 .pricing-header {
   text-align: center;
   padding: 80px 20px 40px;
@@ -637,16 +642,18 @@ body {
 
 /* ===== Cards Slider ===== */
 .slider-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   padding: 50px 0;
 }
 .cards-container {
   display: flex;
-  gap: 30px;
+  gap: 40px;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -728,14 +735,18 @@ body {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 2;
+  z-index: 5;
   transition: 0.2s;
 }
 .slider-btn:hover {
   background: #333;
 }
-.slider-btn.prev { left: 10px; }
-.slider-btn.next { right: 10px; }
+.slider-btn.prev { 
+  left: -60px; 
+}
+.slider-btn.next { 
+  right: -60px; 
+}
 
 /* ===== Social Section ===== */
 .social-updates {
@@ -768,7 +779,6 @@ body {
   background: #333;
 }
 
-
 /* Responsive */
 @media (max-width: 768px) {
   .about-content {
@@ -780,5 +790,15 @@ body {
   }
   .why-card {
     width: 90%;
+  }
+}
+@media (max-width: 992px) {
+  .slider-wrapper {
+    max-width: 600px;
+  }
+}
+@media (max-width: 600px) {
+  .slider-wrapper {
+    max-width: 280px;
   }
 }
