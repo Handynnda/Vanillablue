@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\BundlingController;
 
 Route::get('/', function () {return view('home');});
 Route::get('/home',function(){return view('home');});
@@ -24,7 +25,7 @@ Route::get('/galeri/family',function(){return view('galeri.galerifamily');});
 Route::get('/galeri/graduation',function(){return view('galeri.galerigraduation');});
 Route::get('/galeri/prewed',function(){return view('galeri.galeriprewed');});
 
-Route::get('/listharga',function(){return view('listharga');});
+Route::get('/listharga', [BundlingController::class, 'index'])->name('listharga');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');

@@ -1,7 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+body,
+.pricing-header h1,
+.category-nav a,
+.card,
+.btn-booking,
+.social-card,
+
+.social-card h2 {
+  font-family: 'Poppins', Arial, sans-serif !important;
+}
 
 body{
-    font-family: 'Poppins', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -17,13 +25,15 @@ body{
 }
 .pricing-header {
   text-align: center;
-  padding: 80px 20px 40px;
+  padding: clamp(48px, 6vw, 80px) clamp(16px, 4vw, 32px) clamp(28px, 4vw, 40px);
   background: #f9f9f9;
 }
 .pricing-header h1 {
-  font-size: 28px;
+  font-size: clamp(1.35rem, 1.4vw + 1rem, 1.9rem);
   margin-bottom: 20px;
   color: #1a1a1a;
+  line-height: 1.25;
+  letter-spacing: .3px;
 }
 .category-nav {
   display: flex;
@@ -32,15 +42,25 @@ body{
   gap: 15px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 .category-nav a {
   color: #333;
   text-decoration: none;
-  padding-bottom: 4px;
+  padding: 4px 0;
+  font-size: clamp(.7rem, .5vw + .6rem, .85rem);
+  position: relative;
+  line-height: 1.2;
 }
 .category-nav a.active {
   font-weight: bold;
   border-bottom: 2px solid #000;
+}
+.category-nav a:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
 }
 
 /* ===== Cards Slider ===== */
@@ -56,69 +76,76 @@ body{
 }
 .cards-container {
   display: flex;
-  gap: 40px;
+  gap: clamp(20px, 3vw, 40px);
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  padding: 6px clamp(8px, 2vw, 12px) 14px;
+  scroll-snap-type: x mandatory;
 }
 .cards-container::-webkit-scrollbar {
   display: none;
 }
+
+
 .card {
   background: #fff;
-  border-radius: 12px;
-  overflow: hidden; /* memastikan tetap rounded saat scale */
-  transform-origin: center center; /* scaling lebih natural */
+  border-radius: 12px !important;
+  overflow: hidden;
+  transform-origin: center center;
   will-change: transform;
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-  width: 260px;
-  min-width: 260px;
+  flex: 0 0 clamp(200px, 22vw, 260px);
+  min-width: clamp(200px, 22vw, 260px);
+  max-width: 100%;
+  scroll-snap-align: start;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   text-align: center;
-  padding: 30px 20px;
-  transition: all 0.3s ease;
+  padding: 25px 20px;
+  transition: transform .35s ease, box-shadow .35s ease;
 }
-.card.active {
-  background: linear-gradient(160deg, #314d78, #0a1f3d);
-  color: #fff;
-  transform: scale(1.05);
-  border-radius: 12px; /* tegaskan */
-}
+
 .card:hover {
-  background: linear-gradient(160deg, #314d78, #0a1f3d);
-  color: #fff;
-  transform: scale(1.05);
-  border-radius: 12px; /* tegaskan agar tidak kehilangan rounding */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  cursor: pointer;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
 }
-.card:hover h3,
-.card:hover ul li,
-.card:hover .price {
-  color: #fff;
-}
-.card:hover .btn-booking {
-  background-color: #f9c600;
-  color: #000;
-}
+
 .card h3 {
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  min-height: 40px;
 }
+
 .card ul {
   list-style: none;
   padding: 0;
   margin: 0 0 20px;
   text-align: left;
+
+  flex-grow: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
-.card ul li {
-  margin-bottom: 6px;
-  font-size: 14px;
+.card ul::-webkit-scrollbar {
+  width: 4px;
 }
+.card ul::-webkit-scrollbar-track {
+  background: transparent;
+}
+.card ul::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 10px;
+}
+
 .card .price {
   font-weight: bold;
   font-size: 18px;
-  margin: 10px 0 20px;
+  margin: 10px 0 15px;
 }
+
 .btn-booking {
   background: #f9c600;
   border: none;
@@ -127,10 +154,14 @@ body{
   cursor: pointer;
   border-radius: 6px;
   transition: 0.2s;
+
+  margin-top: auto; /* ✓ tombol selalu posisi paling bawah */
 }
+
 .btn-booking:hover {
   opacity: 0.85;
 }
+
 .slider-btn {
   position: absolute;
   top: 50%;
@@ -150,11 +181,70 @@ body{
   background: #333;
 }
 .slider-btn.prev { 
-  left: -60px; 
+  left: clamp(-48px, -4vw, -32px); 
 }
 .slider-btn.next { 
-  right: -60px; 
+  right: clamp(-48px, -4vw, -32px); 
 }
+.slider-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .slider-wrapper { max-width: 100%; }
+}
+
+@media (max-width: 992px) {
+  .cards-container { gap: 28px; }
+  .card { flex: 0 0 clamp(190px, 30vw, 230px); }
+}
+
+@media (max-width: 768px) {
+  .pricing-header { padding-top: 60px; }
+  .cards-container { gap: 22px; }
+  .card { flex: 0 0 clamp(180px, 42vw, 220px); }
+  .slider-btn.prev,
+  .slider-btn.next { display: none; } /* swipe only */
+}
+
+@media (max-width: 576px) {
+  .pricing-header h1 { font-size: 1.4rem; }
+  .cards-container { gap: 18px; }
+  .card { flex: 0 0 clamp(160px, 48vw, 200px); min-height: 330px; }
+  .card h3 { font-size: .85rem; }
+  .card .price { font-size: .9rem; }
+  .btn-booking { font-size: .75rem; padding: 8px 20px; }
+}
+
+@media (max-width: 400px) {
+  .cards-container { gap: 14px; }
+  .card { flex: 0 0 88%; min-width: 88%; }
+  .category-nav { gap: 10px; }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    height: auto !important; 
+    min-height: 260px;    
+    padding: 20px 16px;
+  }
+
+  .card ul {
+    max-height: 120px;
+  }
+}
+
 
 .social-card{
     border: 1px solid #ddd; 
@@ -194,4 +284,3 @@ body{
     opacity: .95;
     color:#fff ;
 }
-

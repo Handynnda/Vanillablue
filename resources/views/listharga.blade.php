@@ -1,331 +1,96 @@
-@include('header')
- 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>List Harga • VanillaBlue Photostudio</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('assets/css/styleListharga.css') }}">
+  <style>
+    .hidden { display: none; }
+    .category-nav a.active { font-weight: bold; border-bottom: 2px solid #000; }
+    .cards-container { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; }
+    .card { min-width: 250px; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; flex-shrink: 0; }
+    html, body { font-family: 'Poppins', Arial, sans-serif !important; }
+  </style>
+</head>
+<body>
+  @include('header')
 
-<style>
-    .hidden { 
-      display: none;
-    }
-    .category-nav a.active {
-        font-weight: bold;
-        border-bottom: 2px solid #000;
-    }
-</style>
-
-<main class="pricing-page">
-  <!-- dibuat jadi 1 pages -->
-  <section class="pricing-header">
-    <div class="container">
-      <h1 class="text-header">List Harga Di VanillaBlue Photostudio</h1>
-      <nav class="category-nav">
-        <a href="#" data-target="baby">Baby & Kids</a>
-        <a href="#" data-target="birthday">Birthday</a>
-        <a href="#" data-target="maternity">Maternity</a>
-        <a href="#" data-target="prewed">Prewed</a>
-        <a href="#" data-target="graduation" class="active">Graduation</a>
-        <a href="#" data-target="family">Family</a>
-        <a href="#" data-target="group">Group</a>
-        <a href="#" data-target="couple">Couple</a>
-        <a href="#" data-target="personal">Personal</a>
-        <a href="#" data-target="pasfoto">Pas Foto</a>
-        <a href="#" data-target="printf" >Print & Frame</a>
-        {{-- <div>
-          <a href="baby">Baby & Kids</a>
-          <a href="birthday">Birthday</a>
-          <a href="#">Maternity</a>
-          <a href="prewed">Prewed</a>
-          <a href="graduation" class="active">Graduation</a>
-          <a href="family">Family</a>
-          <a href="#">Group</a>
-          <a href="couple">Couple</a>
-          <a href="#">Personal</a>
-          <a href="#">Pas Foto</a>
-          <a href="#">Print & Frame</a>
-        </div> --}}
-      </nav>
-    </div>
-  </section>
-
-            {{-- section page --}}
-          {{-- graduation section --}}
-  <section class="pricing-cards hidden" id="graduation">
-    <div class="container">
-      <div class="slider-wrapper">
-        <button class="slider-btn prev">&#10094;</button>
-        <div class="cards-container">
-          <div class="card">
-            <h3>GRADUATION A</h3>
-            <ul>
-              <li>15 menit, All file google drive</li>
-              <li>10 edit</li>
-              <li>max 4 orang</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">Rp 250.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
-          </div>
-          <div class="card">
-            <h3>GRADUATION B</h3>
-            <ul>
-              <li>15 menit, All file google drive</li>
-              <li>10 edit</li>
-              <li>max 10 orang</li>
-              <li>cetak 10R p2</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">Rp 350.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
-          </div>
-          <div class="card">
-            <h3>GRADUATION C</h3>
-            <ul>
-              <li>15 menit, All file google drive</li>
-              <li>10 edit</li>
-              <li>max 10 orang</li>
-              <li>Cetak 12R + Frame</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">Rp 550.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
-          </div>          
-          <div class="card">
-            <h3>GRADUATION D</h3>
-            <ul>
-              <li>15 menit, All file google drive</li>
-              <li>10 edit</li>
-              <li>max 10 orang</li>
-              <li>Cetak 12R + Frame</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">Rp 550.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
-          </div>
-          <div class="card">
-            <h3>GRADUATION E</h3>
-            <ul>
-              <li>15 menit, All file google drive</li>
-              <li>10 edit</li>
-              <li>max 10 orang</li>
-              <li>Cetak 12R + Frame</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">Rp 550.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
-          </div>
-        </div>
-        <button class="slider-btn next">&#10095;</button>
+  <main class="pricing-page">
+    <section class="pricing-header">
+      <div class="container">
+        <h1 class="text-header"><b>List Harga Di VanillaBlue Photostudio</b></h1>
+        <nav class="category-nav" role="tablist" aria-label="Kategori Paket">
+          @foreach($categories as $c)
+            <a href="?category={{ $c['slug'] }}"
+               role="tab"
+               aria-selected="{{ $c['slug'] === $activeSlug ? 'true' : 'false' }}"
+               class="{{ $c['slug'] === $activeSlug ? 'active' : '' }}"
+               data-target="{{ $c['slug'] }}">{{ $c['label'] }}</a>
+          @endforeach
+        </nav>
       </div>
-    </div>
-  </section>
-            {{-- baby section --}}
-  <section class="pricing-cards hidden" id="baby">
-  <div class="container">
-    <div class="slider-wrapper">
-      <button class="slider-btn prev">&#10094;</button>
-      <div class="cards-container">
-        <div class="card">
-          <h3>BABY & KIDS</h3>
-          <ul>
-            <li>15 menit</li>
-            <li>All file google drive</li>
-            <li>10 edit</li>
-            <li>&nbsp;</li>
-            <li>&nbsp;</li>
-            <li>&nbsp;</li>
-          </ul>
-          <p class="price">IDR 200.000</p>
-          <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
-        </div>
-      </div>
-      <button class="slider-btn next">&#10095;</button>
-    </div>
-  </div>
-  </section>
-            {{-- birthday section --}}
-    <section class="pricing-cards hidden" id="birthday">
-    <div class="container">
-      <div class="slider-wrapper">
-        <button class="slider-btn prev">&#10094;</button>
-        <div class="cards-container">
-          <div class="card">
-              <h3>BIRTHDAY</h3>
-              <ul>
-                <li>20 menit</li>
-                <li>All file google drive</li>
-                <li>&nbsp;</li>
-                <li>&nbsp;</li>
-                <li>&nbsp;</li>
-                <li>&nbsp;</li>
-              </ul>
-              <p class="price">IDR 300.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
-          </div>
-        </div>
-        <button class="slider-btn next">&#10095;</button>
-      </div>
-    </div>
     </section>
-            {{-- couple section --}}
-    <section class="pricing-cards hidden" id="couple">
-    <div class="container">
-      <div class="slider-wrapper">
-        <button class="slider-btn prev">&#10094;</button>
-        <div class="cards-container">
-          <div class="card">
-            <h3>COUPLE</h3>
-              <ul>
-                <li>15 menit</li>
-                <li>All file google drive</li>
-                <li>10 edit</li>
-                <li>&nbsp;</li>
-                <li>&nbsp;</li>
-                <li>&nbsp;</li>
-              </ul>
-              <p class="price">IDR 200.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
+
+    <section class="pricing-cards">
+      <div class="container">
+        <div class="slider-wrapper">
+          <button class="slider-btn prev">&#10094;</button>
+          <div class="cards-container" id="cards-container">
+            @forelse($bundlings as $b)
+              <div class="card">
+                <h3><b>{{ $b->name_bundling }}</b></h3>
+                <ul>
+                  @foreach($b->desc_items as $d)
+                    <li>{{ $d }}</li>
+                  @endforeach
+                </ul>
+                <p class="price">Rp {{ number_format($b->price_bundling,0,',','.') }}</p>
+                <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
+              </div>
+            @empty
+              <div class="card">
+                <h3>{{ collect($categories)->firstWhere('slug',$activeSlug)['label'] ?? 'category' }}</h3>
+                <p class="text-muted mb-3" style="min-height:40px;">Segera</p>
+                <p class="price">Rp -</p>
+                <a href="#" class="btn-booking disabled" style="pointer-events:none;opacity:.6;text-decoration:none;color:#000;">BOOKING</a>
+              </div>
+            @endforelse
           </div>
+          <button class="slider-btn next">&#10095;</button>
         </div>
-        <button class="slider-btn next">&#10095;</button>
       </div>
-    </div>
     </section>
-            {{-- family section --}}
-    <section class="pricing-cards hidden" id="family">
-    <div class="container">
-      <div class="slider-wrapper">
-        <button class="slider-btn prev">&#10094;</button>
-        <div class="cards-container">
-          <div class="card">
-            <h3>FAMILY A</h3>
-            <ul>
-              <li>15 menit</li>
-              <li>All file google drive</li>
-              <li>10 edit</li>
-              <li>Berlaku untuk 1 kostum</li>
-              <li>Max 5 orang</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">IDR 250.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
-          </div>
-          <div class="card">
-            <h3>FAMILY B</h3>
-            <ul>
-              <li>15 menit</li>
-              <li>All file google drive</li>
-              <li>10 edit</li>
-              <li>Berlaku untuk 1 kostum</li>
-              <li>Max 10 orang</li>
-              <li>Cetak 10rp + frame 1</li>
-            </ul>
-            <p class="price">IDR 400.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
-          </div>
-          <div class="card">
-            <h3>FAMILY C</h3>
-            <ul>
-              <li>15 menit</li>
-              <li>All file google drive</li>
-              <li>10 edit</li>
-              <li>Berlaku untuk 1 kostum</li>
-              <li>Max 10 orang</li>
-              <li>Cetak 16rp + frame 1</li>
-            </ul>
-            <p class="price">IDR 600.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
+
+    <section class="social-updates">
+      <div class="container">
+        <div class="social-card">
+            <h2>Jangan Sampe Ketinggalan Update Terbaru Kami!</h2>
+            <p>Follow sosial media kami untuk melihat koleksi terbaru!</p>
+          <div class="social-buttons">
+            <!-- replaced nested button+a with single anchor buttons -->
+            <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" class="btn-social btn-tiktok" target="_blank" rel="noopener">TIKTOK</a>
+            <a href="https://www.instagram.com/vanillablue_photostudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="btn-social btn-instagram" target="_blank" rel="noopener">INSTAGRAM</a>
           </div>
         </div>
-        <button class="slider-btn next">&#10095;</button>
       </div>
-    </div>
     </section>
-            {{-- prewed section --}}
-    <section class="pricing-cards hidden" id="prewed">
-    <div class="container">
-      <div class="slider-wrapper">
-        <button class="slider-btn prev">&#10094;</button>
-        <div class="cards-container">
-          <div class="card">
-            <h3>PRE-WEDDING</h3>
-            <ul>
-              <li>30 menit</li>
-              <li>All file google drive</li>
-              <li>10 edit</li>
-              <li>Berlaku untuk 1 kostum</li>
-              <li>&nbsp;</li>
-              <li>&nbsp;</li>
-            </ul>
-            <p class="price">IDR 500.000</p>
-            <a href="booking" class="btn-booking" style="text-decoration: none; color: #000;">BOOKING</a>
-          </div>
-        </div>
-        <button class="slider-btn next">&#10095;</button>
-      </div>
-    </div>
-    </section>
-  <section class="social-updates">
-    <div class="container">
-      <div class="social-card">
-          <h2>Jangan Sampe Ketinggalan Update Terbaru Kami!</h2>
-          <p>Follow sosial media kami untuk melihat koleksi terbaru!</p>
-        <div class="social-buttons">
-          <!-- replaced nested button+a with single anchor buttons -->
-          <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" class="btn-social btn-tiktok" target="_blank" rel="noopener">TIKTOK</a>
-          <a href="https://www.instagram.com/vanillablue_photostudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="btn-social btn-instagram" target="_blank" rel="noopener">INSTAGRAM</a>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+  </main>
 
-@include('footer')
+  @include('footer')
 
-<!-- === SLIDER SCRIPT === -->
-<script>
-// === SLIDER SCRIPT ===
-const container = document.querySelector('.cards-container');
-const prev = document.querySelector('.slider-btn.prev');
-const next = document.querySelector('.slider-btn.next');
-
-const scrollStep = 300;
-
-next?.addEventListener('click', () => {
-  container.scrollBy({ left: scrollStep, behavior: 'smooth' });
-});
-
-prev?.addEventListener('click', () => {
-  container.scrollBy({ left: -scrollStep, behavior: 'smooth' });
-});
-
-document.querySelectorAll('.category-nav a').forEach(menu => {
-  menu.addEventListener('click', function(e) {
-    e.preventDefault();
-
-    // SEMBUNYIKAN SEMUA SECTION
-    document.querySelectorAll('.pricing-cards')
-      .forEach(section => section.classList.add('hidden'));
-
-    // TAMPILKAN SECTION SESUAI TARGET
-    const target = this.getAttribute('data-target');
-    const showSection = document.getElementById(target);
-    if (showSection) showSection.classList.remove('hidden');
-
-    // ACTIVE MENU
-    document.querySelectorAll('.category-nav a')
-      .forEach(a => a.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
-
-// TAMPILKAN DEFAULT (Graduation)
-document.getElementById("graduation").classList.remove("hidden");
-
-</script>
+  <script>
+    // Slider horizontal tetap
+    const container = document.getElementById('cards-container');
+    const prev = document.querySelector('.slider-btn.prev');
+    const next = document.querySelector('.slider-btn.next');
+    const scrollStep = 300;
+    next?.addEventListener('click', () => container.scrollBy({ left: scrollStep, behavior: 'smooth' }));
+    prev?.addEventListener('click', () => container.scrollBy({ left: -scrollStep, behavior: 'smooth' }));
+  </script>
+</body>
+</html>

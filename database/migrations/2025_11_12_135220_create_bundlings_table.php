@@ -12,7 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('name_bundling');
             $table->double('price_bundling');
-            $table->string('description_bundling')->nullable();
+            $table->json('description_bundling')->nullable();
+            $table->enum('category', [
+                'Baby & Kids','Birthday','Maternity','Prewed','Graduation','Family',
+                'Group','Couple','Personal','Pas Foto','Print & Frame'
+            ])->nullable()->index();
             $table->timestamps();
         });
     }

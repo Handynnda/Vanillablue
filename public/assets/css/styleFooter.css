@@ -1,38 +1,67 @@
-    .site-footer {
-      background: #fff;
-      color: #000;
-      padding: 15px 40px;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      border-top: 1px solid #ddd;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
+.site-footer {
+  background: #ffffff;
+  color: #000;
+  padding: 15px 20px;
+  font-family: 'Poppins', Arial, sans-serif;
+  text-align: center;
+  border-top: 1px solid #ddd;
+}
 
-    .footer-logo img {
-      height: 100%;
-      max-height: 150px;
-      margin-top: 10px;
-    }
+/* Desktop Default */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
 
-    .footer-nav a {
-      color: #000;
-      text-decoration: none;
-      margin-left: 25px;
-      font-weight: 600;
-    }
+.footer-logo img {
+  width: 120px;         /* Ganti dari height: 100% */
+  height: auto;
+}
 
-    .footer-nav a:hover {
-      text-decoration: underline;
-    }
+/* Navigasi */
+.footer-nav a {
+  color: #000;
+  text-decoration: none;
+  margin-left: 25px;
+  font-weight: 600;
+}
 
-    .footer-bottom {
-      font-size: 0.85rem;
-      color: #444;
-    }
+.footer-nav a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+/* =========================
+   MOBILE FIX
+   ========================= */
+@media (max-width: 480px) {
+  .footer-top {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .footer-logo img {
+    width: 90px;  
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .footer-nav a {
+    margin: 0 10px; 
+    display: inline-block;
+  }
+
+  .site-footer {
+    padding: 10px 15px; 
+  }
+}
