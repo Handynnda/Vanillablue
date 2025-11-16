@@ -2,7 +2,7 @@
  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/styleListharga.css') }}">
 
 <style>
     .hidden { 
@@ -15,10 +15,10 @@
 </style>
 
 <main class="pricing-page">
-//dibuat jadi 1 pages
+  <!-- dibuat jadi 1 pages -->
   <section class="pricing-header">
     <div class="container">
-      <h1>Lis Harga Di VanillaBlue Photostudio</h1>
+      <h1 class="text-header">List Harga Di VanillaBlue Photostudio</h1>
       <nav class="category-nav">
         <a href="#" data-target="baby">Baby & Kids</a>
         <a href="#" data-target="birthday">Birthday</a>
@@ -273,19 +273,13 @@
     </section>
   <section class="social-updates">
     <div class="container">
-      <div class="social-card" 
-           style="border: 1px solid #ddd; 
-                  border-radius: 15px; 
-                  padding: 20px; 
-                  text-align: center; 
-                  box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-                  max-width: 830px; 
-                  margin: 0 auto;">
+      <div class="social-card">
           <h2>Jangan Sampe Ketinggalan Update Terbaru Kami!</h2>
           <p>Follow sosial media kami untuk melihat koleksi terbaru!</p>
         <div class="social-buttons">
-          <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" class="btn-social">TIKTOK</a>
-          <a href="https://www.instagram.com/vanillablue_photostudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="btn-social">INSTAGRAM</a>
+          <!-- replaced nested button+a with single anchor buttons -->
+          <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" class="btn-social btn-tiktok" target="_blank" rel="noopener">TIKTOK</a>
+          <a href="https://www.instagram.com/vanillablue_photostudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="btn-social btn-instagram" target="_blank" rel="noopener">INSTAGRAM</a>
         </div>
       </div>
     </div>
