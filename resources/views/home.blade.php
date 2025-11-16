@@ -10,11 +10,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="assets/css/style.css">
 
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
 </head>
 <body>
 
@@ -22,7 +17,7 @@
   <section id="home" class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1>MENGABADIKAN MOMEN DAN<br>MENCIPTAKAN KENANGAN YANG KEKAL</h1>
+      <h1>MENGABADIKAN MOMEN DAN<br>MEREKAM MOMEN BAHAGIA</h1>
       <p><b>VanillaBlue Photostudio</b> mengubah momen berharga dalam hidup Anda menjadi warisan visual yang indah. Dapatkan hasil foto dengan sentuhan artistik dan kualitas premium.</p>
       <a href="/listharga" class="btn btn-primary">JADWALKAN SESI FOTO ANDA</a>
     </div>
@@ -34,13 +29,13 @@
     <div class="about-content">
       <div class="about-text">
         <p>VanillaBlue Studio adalah sebuah studio yang didirikan pada tanggal 02 April 2015. 
-        Visi dari studio ini adalah “Merekam Momen Bahagia”.</p>
+        Visi dari studio ini adalah <b>“Merekam Momen Bahagia”.</b></p>
         <p>Studio Vanillablue menjalankan misinya dengan fokus pada beberapa hal utama:</p>
         <ul>
-          <li><b>Mengabadikan Emosi Sejati:</b> Menyediakan layanan fotografi dan videografi berkualitas tinggi untuk menangkap setiap ekspresi, tawa, dan air mata kebahagiaan dengan detail yang autentik dan indah.</li>
-          <li><b>Menciptakan Kenangan Abadi:</b> Mengubah momen spesial menjadi karya visual yang artistik, memiliki nilai sentimental, dan dapat dikenang sepanjang masa oleh setiap klien.</li>
-          <li><b>Pengalaman Menyenangkan:</b> Membangun hubungan yang hangat dan profesional dengan klien, memastikan proses sesi pemotretan atau perekaman berjalan nyaman, personal, dan berkesan.</li>
-          <li><b>Inovasi dan Kualitas:</b> Terus mengembangkan teknik, peralatan, dan gaya visual agar hasil akhir selalu relevan, segar, dan melebihi harapan klien.</li>
+          <li>Menyediakan layanan fotografi dan videografi berkualitas tinggi untuk menangkap setiap ekspresi, tawa, dan air mata kebahagiaan dengan detail yang autentik dan indah.</li>
+          <li>Mengubah momen spesial menjadi karya visual yang artistik, memiliki nilai sentimental, dan dapat dikenang sepanjang masa oleh setiap klien.</li>
+          <li>Membangun hubungan yang hangat dan profesional dengan klien, memastikan proses sesi pemotretan atau perekaman berjalan nyaman, personal, dan berkesan.</li>
+          <li>Terus mengembangkan teknik, peralatan, dan gaya visual agar hasil akhir selalu relevan, segar, dan melebihi harapan klien.</li>
         </ul>
         <p>Kami hadir untuk memberikan pelayanan fotografi profesional dan personal agar hasil foto sesuai harapan Anda.</p>
       </div>
@@ -120,8 +115,8 @@
         style="padding: 50px;
         padding-left: 350px; 
         padding-right: 350px;
-        padding-top: 200px;
-        padding-bottom: 200px;
+        padding-top: 100px;
+        padding-bottom: 100px;
         text-align: center; 
         max-width: 100%; 
         margin: 0 auto;">
@@ -134,22 +129,26 @@
 
   <!-- LOKASI SECTION -->
 <section id="lokasi" class="lokasi-section">
+  <h1 style="font-weight:bold; text-align:center; margin-bottom: 45px;">Lokasi Vanillablue Studio</h1>
   <!-- FOTO LOKASI -->
   <div class="lokasi-foto">
     <img src="assets/images/studio.jpg" alt="Foto Studio VanillaBlue">
   </div>
+  <div class="lokasi-gmaps">  
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.1978044302223!2d108.48985800000001!3d-6.985965399999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f143b5fefcb33%3A0x65c508f374d025ee!2sSTUDIO%20VANILLABLUE!5e0!3m2!1sid!2sid!4v1763273648052!5m2!1sid!2sid" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+  </div>
+</section>    
 
 <!-- Bagian Kontak -->
 <section id="kontak" class="kontak-section py-5 bg-white">
-    <div class="social-card" 
-    style=" 
-    border-radius: 15px; 
-    padding: 50px;
-    padding-left: 100px; 
-    padding-right: 150px; 
-    text-align: center; 
-    max-width: 100%; 
-    margin: 0 auto;">
+    <div class="social-card">
       <div class="row">
         <div class="col-md-4 mb-3" style="text-align: left">
           <h5 class="fw-bold">Alamat</h5>

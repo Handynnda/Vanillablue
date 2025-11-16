@@ -4,12 +4,12 @@
       <img src="assets/images/studiologo.jpg" alt="Vanillablue Studio">
     </div>
     <nav class="footer-nav">
-      <a href="/">Beranda</a>
+      <a href="/#home">Beranda</a>
       <a href="/#galeri">Galeri</a>
       <a href="listharga">Lis Harga</a>
       <a href="/#kontak">Kontak</a>
     </nav>
-  </div>
+  </div>  
   <div class="footer-bottom">
     <p>Copyright © {{ date('Y') }} Vanillablue Studio.</p>
   </div>

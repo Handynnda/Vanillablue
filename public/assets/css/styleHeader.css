@@ -1,0 +1,49 @@
+/* Hilangkan menu desktop di HP */
+@media (max-width: 992px) {
+  .nav-menu {
+    display: none !important;
+  }
+
+  .auth-area {
+    display: none !important;
+  }
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: #0b132b;
+  padding: 15px;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.mobile-menu a {
+  color: white;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.mobile-menu.show-menu {
+  display: flex;
+}
+
+/* Burger icon */
+.burger {
+  width: 30px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.burger span {
+  display: block;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+}

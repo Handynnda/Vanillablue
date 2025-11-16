@@ -15,7 +15,7 @@
 </style>
 
 <main class="pricing-page">
-
+//dibuat jadi 1 pages
   <section class="pricing-header">
     <div class="container">
       <h1>Lis Harga Di VanillaBlue Photostudio</h1>
