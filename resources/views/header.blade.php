@@ -7,7 +7,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <link rel="stylesheet" href="assets/css/styleHeader.css">
 
 <!-- HEADER -->
-<header class="navbar fixed-top py-3" style="background-color: #0b132b;">
+<header class="navbar fixed-top py-3" style="background-color: #222831;">
   <div class="container d-flex align-items-center justify-content-between">
 
     <!-- Logo -->
@@ -56,7 +56,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </ul>
         </div>
       @else
-        <a href="{{ route('login') }}" class="btn btn-light fw-bold px-3 py-1">MASUK</a>
+        <a href="{{ route('login') }}" class="btn btn-outline-light fw-bold px-3 py-1">MASUK</a>
         <a href="{{ route('register') }}" class="btn btn-outline-light fw-bold px-3 py-1">DAFTAR</a>
       @endauth
     </div>
