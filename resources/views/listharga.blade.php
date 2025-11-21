@@ -50,7 +50,7 @@
                   @endforeach
                 </ul>
                 <p class="price">Rp {{ number_format($b->price_bundling,0,',','.') }}</p>
-                <a href="booking" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
+                <a href="{{ route('booking', ['id' => $b->id]) }}" class="btn-booking" style="text-decoration:none; color:#000;">BOOKING</a>
               </div>
             @empty
               <div class="card">

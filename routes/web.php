@@ -14,8 +14,6 @@ Route::get('/contact',function(){return view('contact');});
 Route::get('/footer',function(){return view('footer');});
 Route::get('/header',function(){return view('header');});
 
-
-
 //tampilan galeri buat 1 aja, nanti isinya di bagi2 sesuai kategori
 Route::get('/galeri/detail',function(){return view('galeri.viewGaleri');});
 Route::get('/galeri/baby',function(){return view('galeri.galeribaby');});
@@ -31,7 +29,9 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+Route::get('/booking/{id}', [BookingController::class, 'index'])->name('booking');
 
+Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
