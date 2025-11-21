@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
+            $table->enum('category', [
+                'Baby & Kids','Birthday','Maternity','Prewed','Graduation','Family',
+                'Group','Couple','Personal','Pas Foto','Print & Frame'
+            ]);
+            $table->string('url_image');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('images');
     }
 };

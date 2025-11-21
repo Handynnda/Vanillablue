@@ -11,10 +11,10 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone', 20); // gunakan string agar bisa +62
+            $table->string('phone', 20);
             $table->string('email')->unique();
             $table->string('password');
-            $table->timestamps(); // created_at & updated_at
+            $table->timestamps();
         });
     }
 

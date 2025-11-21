@@ -2,45 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Image;
 
 class GalleryController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Menampilkan galeri berdasarkan slug kategori (opsional).
+     * Route: /galeri/{slug?} dengan default 'baby'.
+     */
+    public function index(?string $slug = null)
     {
-        // category slug from query string, e.g. ?category=baby
-        $slug = $request->query('category', 'baby');
+        $slug = $slug ?? request()->query('category', 'baby');
 
-        // load mapping from config/gallery.php
-        $all = config('gallery.images', []);
-
-        // map some common slugs to config keys
-        $slugMap = [
-            'baby' => 'baby',
-            'birthday' => 'birthday',
-            'prewed' => 'prewed',
-            'graduation' => 'graduation',
-            'family' => 'family',
-            'couple' => 'couple',
+        // Pemetaan slug ke enum kategori di DB (nilai enum persis pada migrasi)
+        $categoryMap = [
+            'baby' => 'Baby & Kids',
+            'birthday' => 'Birthday',
+            'maternity' => 'Maternity',
+            'prewed' => 'Prewed',
+            'graduation' => 'Graduation',
+            'family' => 'Family',
+            'group' => 'Group',
+            'couple' => 'Couple',
+            'personal' => 'Personal',
+            'pas-foto' => 'Pas Foto',
+            'print-frame' => 'Print & Frame',
         ];
 
-        $key = $slugMap[$slug] ?? 'baby';
+        // Normalisasi slug jika tidak ada di map: coba Title Case atau langsung
+        $enumCategory = $categoryMap[$slug]
+            ?? match ($slug) {
+                'pasfoto','pas_foto' => 'Pas Foto',
+                'print','printframe','print_frame' => 'Print & Frame',
+                default => ucfirst(str_replace(['-','_'], ' ', $slug)),
+            };
 
-        $images = $all[$key] ?? [];
+        // Pastikan fallback aman: jika tidak cocok salah satu enum, pakai default
+        $allowed = array_values($categoryMap);
+        $allowed[] = 'Baby & Kids';
+        if (!in_array($enumCategory, $allowed, true)) {
+            $enumCategory = 'Baby & Kids';
+        }
 
-        // Title / subtitle simple mapping
-        $titles = [
-            'baby' => 'Galeri Foto Baby',
-            'birthday' => 'Galeri Foto Birthday',
-            'prewed' => 'Galeri Foto Prewed',
-            'graduation' => 'Galeri Foto Graduation',
-            'family' => 'Galeri Foto Family',
-            'couple' => 'Galeri Foto Couple',
-        ];
+        // Ambil url_image dari tabel images (koleksi bisa kosong jika belum ada data)
+        $images = Image::where('category', $enumCategory)->orderByDesc('id')->pluck('url_image');
 
-        $title = $titles[$key] ?? 'Galeri Foto';
-        $subtitle = 'Koleksi foto terbaik dari Vanillablue Photostudio';
+        $title = 'Galeri Foto ' . $enumCategory;
+        $subtitle = 'Koleksi foto kategori ' . $enumCategory . ' dari Vanillablue Photostudio';
 
-        return view('galeri.viewgaleri', compact('title', 'subtitle', 'images'));
+        return view('galeri.viewgaleri', compact('title', 'subtitle', 'images', 'enumCategory'));
     }
 }

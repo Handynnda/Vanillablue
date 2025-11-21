@@ -5,13 +5,13 @@
     <h1>{{ $title ?? 'Galeri Foto' }}</h1>
     <p class="subtitle">{{ $subtitle ?? 'Koleksi foto terbaik dari Vanillablue Photostudio' }}</p>
 
-    @if(!empty($images) && is_array($images))
+    @if(isset($images) && $images->count())
       <div class="grid-galeri">
-        @foreach($images as $img)
-          <a href="{{ $img }}" target="_blank" class="galeri-item">
-            <img src="{{ $img }}" loading="lazy" alt="{{ $title ?? 'Galeri' }}">
-          </a>
-        @endforeach
+      @foreach($images as $img)
+        <a href="{{ $img }}" target="_blank" class="galeri-item">
+          <img src="{{ $img }}" loading="lazy" alt="{{ $enumCategory ?? $title ?? 'Galeri' }}">
+        </a>
+      @endforeach
       </div>
     @else
       <div class="grid-galeri">
