@@ -49,7 +49,7 @@
                         {{ session('success') }}
                     </p>
 
-                    <a href="{{ url('/') }}" 
+                    <a href="{{ url('/home') }}" 
                        style="
                             background:#1f1f1f; 
                             color:white; 
