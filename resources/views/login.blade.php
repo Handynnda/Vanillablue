@@ -47,6 +47,7 @@
         <button type="submit" class="btn-login">MASUK</button>
 
         <div class="bottom-links">
+          
           <a href="{{ route('register') }}">Belum Punya Akun?</a>
           <a href="{{ route('password.request') }}">Lupa Kata Sandi</a>
         </div>
