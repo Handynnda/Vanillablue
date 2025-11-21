@@ -9,7 +9,6 @@ class Paket extends Model
 {
     use HasFactory;
 
-    // nama tabel berbeda dari default
     protected $table = 'bundlings';
 
     protected $fillable = [
@@ -18,5 +17,10 @@ class Paket extends Model
         'description_bundling',
         'category',
     ];
-    
+
+    // Relasi ke Order
+    public function orders()
+    {
+        return $this->hasMany(\App\Models\Order::class, 'bundling_id');
+    }
 }

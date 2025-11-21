@@ -28,9 +28,9 @@ return new class extends Migration
             $table->double('total_price');
             $table->integer('sum_order')->default(1);
 
-            // jika kamu memakai nama & no_wa
-            $table->string('nama');
-            $table->string('no_wa');
+            $table->string('name');
+            $table->string('phone', 20);
+
 
             $table->timestamps();
         });
