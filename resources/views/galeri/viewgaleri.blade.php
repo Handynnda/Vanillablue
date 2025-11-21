@@ -2,19 +2,26 @@
 <link rel="stylesheet" href="{{ asset('assets/css/styleGaleri.css') }}">
 <section class="galeri-detail">
   <div class="container">
-    <h1>Galeri Foto Baby</h1>
-    <p class="subtitle">Koleksi foto-foto LAINNYA terbaik dari Vanillablue Photostudio</p>
+    <h1>{{ $title ?? 'Galeri Foto' }}</h1>
+    <p class="subtitle">{{ $subtitle ?? 'Koleksi foto terbaik dari Vanillablue Photostudio' }}</p>
 
-    <div class="grid-galeri">
-      <img src="assets/images/baby/baby1.jpg" alt="LAINNYA 1">
-      <img src="assets/images/baby/baby2.jpg" alt="LAINNYA 2">
-      <img src="assets/images/baby/baby3.jpg" alt="LAINNYA 3">
-      <img src="assets/images/baby/baby4.jpg" alt="LAINNYA 4">
-      <img src="assets/images/baby/baby5.jpg" alt="LAINNYA 5">
-      <img src="assets/images/baby/baby6.jpg" alt="LAINNYA 6">
-    </div>
+    @if(!empty($images) && is_array($images))
+      <div class="grid-galeri">
+        @foreach($images as $img)
+          <a href="{{ $img }}" target="_blank" class="galeri-item">
+            <img src="{{ $img }}" loading="lazy" alt="{{ $title ?? 'Galeri' }}">
+          </a>
+        @endforeach
+      </div>
+    @else
+      <div class="grid-galeri">
+        <img src="{{ asset('assets/images/baby/baby1.jpg') }}" alt="fallback 1">
+        <img src="{{ asset('assets/images/baby/baby2.jpg') }}" alt="fallback 2">
+        <img src="{{ asset('assets/images/baby/baby3.jpg') }}" alt="fallback 3">
+      </div>
+    @endif
 
-    <a href="/#galeri" class="back-button">← Kembali ke Galeri Utama</a>
+    <a href="/{{ '#galeri' }}" class="back-button">← Kembali ke Galeri Utama</a>
   </div>
 </section>
 

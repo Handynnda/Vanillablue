@@ -7,6 +7,7 @@ use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BundlingController;
+use App\Http\Controllers\GalleryController;
 
 Route::get('/', function () {return view('home');});
 Route::get('/home',function(){return view('home');});
@@ -14,6 +15,7 @@ Route::get('/contact',function(){return view('contact');});
 Route::get('/footer',function(){return view('footer');});
 Route::get('/header',function(){return view('header');});
 
+<<<<<<< HEAD
 //tampilan galeri buat 1 aja, nanti isinya di bagi2 sesuai kategori
 Route::get('/galeri/detail',function(){return view('galeri.viewGaleri');});
 Route::get('/galeri/baby',function(){return view('galeri.galeribaby');});
@@ -22,6 +24,19 @@ Route::get('/galeri/couple',function(){return view('galeri.galericouple');});
 Route::get('/galeri/family',function(){return view('galeri.galerifamily');});
 Route::get('/galeri/graduation',function(){return view('galeri.galerigraduation');});
 Route::get('/galeri/prewed',function(){return view('galeri.galeriprewed');});
+=======
+
+
+// Tampilan galeri tunggal — konten diisi dinamis oleh GalleryController
+Route::get('/galeri/detail', [GalleryController::class, 'index'])->name('galeri.detail');
+// Legacy routes kept for compatibility; redirect to single dynamic view with category
+Route::get('/galeri/baby', function () { return redirect()->route('galeri.detail', ['category' => 'baby']); });
+Route::get('/galeri/birthday', function () { return redirect()->route('galeri.detail', ['category' => 'birthday']); });
+Route::get('/galeri/couple', function () { return redirect()->route('galeri.detail', ['category' => 'couple']); });
+Route::get('/galeri/family', function () { return redirect()->route('galeri.detail', ['category' => 'family']); });
+Route::get('/galeri/graduation', function () { return redirect()->route('galeri.detail', ['category' => 'graduation']); });
+Route::get('/galeri/prewed', function () { return redirect()->route('galeri.detail', ['category' => 'prewed']); });
+>>>>>>> 4807ae3a6b9eeea5d0738e354680ae65587784e5
 
 Route::get('/listharga', [BundlingController::class, 'index'])->name('listharga');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
