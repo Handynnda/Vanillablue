@@ -49,7 +49,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <li><a class="dropdown-item" href="#">Profil</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <form action="{{ route('logout') }}" method="GET" style="display: inline;">
+              <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
                 <button class="dropdown-item text-danger" type="submit">Keluar</button>
               </form>
             </li>

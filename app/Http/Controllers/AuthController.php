@@ -17,17 +17,26 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+public function login(Request $request)
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        // Redirect berdasarkan role
+        if ($user->role === 'admin') {
+            return redirect('/admin');
         }
 
-        return back()->with('error', 'Email atau password salah!');
+        return redirect('/'); // redirect untuk user biasa
     }
+
+    return back()->with('error', 'Email atau password salah!');
+    }
+
 
     public function logout(Request $request)
     {
