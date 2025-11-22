@@ -9,7 +9,6 @@ class Paket extends Model
 {
     use HasFactory;
 
-    // nama tabel berbeda dari default
     protected $table = 'bundlings';
 
     protected $fillable = [
