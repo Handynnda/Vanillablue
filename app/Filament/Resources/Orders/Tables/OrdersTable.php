@@ -14,11 +14,9 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('customer_id')
-                    ->numeric()
+                TextColumn::make('customer.name')
                     ->sortable(),
-                TextColumn::make('bundling_id')
-                    ->numeric()
+                TextColumn::make('bundling.name_bundling')
                     ->sortable(),
                 TextColumn::make('book_date')
                     ->date()
@@ -33,7 +31,8 @@ class OrdersTable
                 TextColumn::make('order_status')
                     ->badge(),
                 TextColumn::make('total_price')
-                    ->money()
+                    ->money('IDR', true)
+                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable(),
                 TextColumn::make('sum_order')
                     ->numeric()

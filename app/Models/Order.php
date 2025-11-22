@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\Customer;
+use App\Models\User;
 use App\Models\Paket;
 
 class Order extends Model
@@ -22,8 +21,8 @@ class Order extends Model
         'order_status',
         'total_price',
         'sum_order',
-        'nama',
-        'no_wa'
+        'name',
+        'phone'
     ];
 
     public function bundling()
@@ -33,6 +32,6 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 }

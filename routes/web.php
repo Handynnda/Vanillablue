@@ -27,7 +27,7 @@ Route::get('/galeri/prewed', function () { return redirect()->route('galeri.deta
 
 Route::get('/listharga', [BundlingController::class, 'index'])->name('listharga');
 
-// AUTH
+// AUTH 
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');

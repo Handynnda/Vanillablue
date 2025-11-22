@@ -386,13 +386,6 @@ body {
   margin: 0 auto;
 }
 
-
-
-
-
-
-
-
 /* ===== Media Queries ===== */
 @media (max-width: 1024px) {
   .hero-content h1 { font-size: 2rem; }

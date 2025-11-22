@@ -19,7 +19,6 @@ class BookingController extends Controller
         return view('booking', compact('paket'));
     }
 
-    // Method store untuk menyimpan data booking
     public function store(Request $request)
     {
         $request->validate([
@@ -38,18 +37,17 @@ class BookingController extends Controller
         $order = Order::create([
             'customer_id' => Auth::id(),
             'bundling_id' => $paket->id,
-            'book_date' => $request->tanggal,
-            'book_time' => $request->jam,
-            'location' => $request->tipe,
-            'note' => $request->note ?? null,
-            'order_status' => 'unpaid',
+            'book_date'   => $request->tanggal,
+            'book_time'   => $request->jam,
+            'location'    => $request->tipe,
+            'note'        => $request->note ?? null,
+            'order_status'=> 'unpaid',
             'total_price' => $paket->price_bundling * ($request->sum_order ?? 1),
-            'sum_order' => $request->sum_order ?? 1,
-            'nama' => $request->nama,
-            'no_wa' => $request->no_wa
+            'sum_order'   => $request->sum_order ?? 1,
+            'name'        => $request->nama, 
+            'phone'       => $request->no_wa 
         ]);
 
         return redirect()->back()->with('success', 'Booking berhasil!');
     }
-
 }
