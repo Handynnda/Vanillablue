@@ -1,4 +1,5 @@
 @include ('header')
+
 <link rel="stylesheet" href="{{ asset('assets/css/styleGaleri.css') }}">
 <section class="galeri-detail">
   <div class="container">
@@ -20,37 +21,53 @@
         <img src="{{ asset('assets/images/baby/baby3.jpg') }}" alt="fallback 3">
       </div>
     @endif
-
-    <a href="/{{ '#galeri' }}" class="back-button">← Kembali ke Galeri Utama</a>
+    <a href="{{ route('galeri.detail') }}" class="back-button">← Kembali ke Galeri Utama</a>
   </div>
 </section>
 
-<section class="harga-section">
-  <h2>List Harga Foto LAINNYA</h2>
+    <section class="pricing-cards">
+      <div class="container">
+        <div class="cards-container">
+          @if(isset($packages) && count($packages))
+            @foreach($packages as $p)
+              <div class="card">
+                <h3><b>{{ $p['name'] }}</b></h3>
+                @if(!empty($p['description']))
+                  <ul>
+                    @foreach($p['description'] as $d)
+                      <li>{{ $d }}</li>
+                    @endforeach
+                  </ul>
+                @else
+                  <p class="text-muted">Deskripsi belum tersedia.</p>
+                @endif
+                <p class="price">Rp {{ number_format($p['price'], 0, ',', '.') }}</p>
+                <a href="{{ route('booking', ['id' => $p['id']]) }}" class="btn-booking">BOOKING</a>
+              </div>
+            @endforeach
+          @else
+            <div class="card">
+              <h3>{{ $enumCategory ?? 'Kategori' }}</h3>
+              <p class="text-muted">Belum ada paket untuk kategori ini.</p>
+              <p class="price">Rp -</p>
+              <a href="#" class="btn-booking disabled" style="pointer-events:none;opacity:.6;">BOOKING</a>
+            </div>
+          @endif
+        </div>
+      </div>
+    </section>
 
-  <div class="harga-list">
-    <div class="harga-card">
-      <p class="kategori">LAINNYA</p>
-      <ul>
-        <li>15 menit</li>
-        <li>All file google drive</li>
-        <li>10 edit</li>
-      </ul>
-      <p class="harga">IDR 200.000</p>
-      <a href="/booking" class="btn-booking">BOOKING</a>
-    </div>
-  </div>
-</section>
-
-<section class="update-section">
-  <div class="update-box">
-    <h3>Jangan Sampe Ketinggalan<br>Update Terbaru Kami !</h3>
-    <p>Follow sosial media kami untuk melihat koleksi terbaru dan tips fotografi.</p>
-    <div class="update-btns">
-      <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-sosmed tiktok">TIKTOK</a>
-      <a href="https://www.instagram.com/vanillablue_photostudio/" target="_blank" class="btn-sosmed instagram">INSTAGRAM</a>
-    </div>
-  </div>
-</section>
-
+    <section class="social-updates">
+      <div class="container">
+        <div class="social-card">
+            <h2>Jangan Sampe Ketinggalan Update Terbaru Kami!</h2>
+            <p>Follow sosial media kami untuk melihat koleksi terbaru!</p>
+          <div class="social-buttons">
+            <a href="https://www.tiktok.com/@vanillabluephotostudio?is_from_webapp=1&sender_device=pc" class="btn-social btn-tiktok" target="_blank" rel="noopener">TIKTOK</a>
+            <a href="https://www.instagram.com/vanillablue_photostudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="btn-social btn-instagram" target="_blank" rel="noopener">INSTAGRAM</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 @include ('footer')

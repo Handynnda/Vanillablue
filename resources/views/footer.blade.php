@@ -3,12 +3,12 @@
 <footer class="site-footer">
   <div class="footer-top">
     <div class="footer-logo">
-      <img src="assets/images/studiologo.jpg" alt="Vanillablue Studio">
+      <img src="{{ asset('assets/images/studiologo.jpg') }}" alt="Vanillablue Studio">
     </div>
     <nav class="footer-nav">
       <a href="/#home">Beranda</a>
       <a href="/#galeri">Galeri</a>
-      <a href="listharga">List Harga</a>
+      <a href="{{ route('listharga') }}">List Harga</a>
       <a href="/#kontak">Kontak</a>
     </nav>
   </div>  

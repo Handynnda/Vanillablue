@@ -211,7 +211,7 @@ body {
 }
 
 .why-card:hover {
-  background: linear-gradient(160deg, #1e3c72, #2a5298);
+  background: linear-gradient(#657FA7, #222831);
   color: #fff;
   transform: translateY(-10px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -258,7 +258,7 @@ body {
 
 /* ===== Galeri Section ===== */
 .galeri-section {
-  background: linear-gradient(to bottom, #1a2740, #1d2c48);
+  background: linear-gradient(#657FA7, #4D607D, #222831);
   color: white;
   text-align: center;
   padding: 80px 5%;

@@ -26,12 +26,12 @@ public function login(Request $request)
 
         $user = Auth::user();
 
-        // Redirect berdasarkan role
+
         if ($user->role === 'admin') {
             return redirect('/admin');
         }
 
-        return redirect('/'); // redirect untuk user biasa
+        return redirect('/');
     }
 
     return back()->with('error', 'Email atau password salah!');

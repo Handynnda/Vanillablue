@@ -14,10 +14,10 @@ class OrderForm
     {
         return $schema
             ->components([
-                TextInput::make('customer_id')
+                TextInput::make('customer.name')
                     ->required()
                     ->numeric(),
-                TextInput::make('bundling_id')
+                TextInput::make('bundling.name_bundling')
                     ->required()
                     ->numeric(),
                 DatePicker::make('book_date')
@@ -37,7 +37,7 @@ class OrderForm
                 TextInput::make('total_price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('IDR'),
                 TextInput::make('sum_order')
                     ->required()
                     ->numeric()

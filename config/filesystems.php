@@ -47,6 +47,19 @@ return [
             'report' => false,
         ],
 
+        'cloudinary' => [
+            'driver' => 'cloudinary',
+            // Required keys for cloudinary-laravel Filesystem driver
+            'cloud'  => env('CLOUDINARY_CLOUD_NAME'),
+            'key'    => env('CLOUDINARY_API_KEY'),
+            'secret' => env('CLOUDINARY_API_SECRET'),
+            // Use HTTPS for delivery
+            'secure' => env('CLOUDINARY_SECURE', true),
+            // Optional: organize uploads under a folder
+            'prefix' => env('CLOUDINARY_FOLDER'),
+            // Do not set 'url' to avoid parsing issues; keys above suffice
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
