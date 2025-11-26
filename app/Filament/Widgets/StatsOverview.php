@@ -12,13 +12,10 @@ class StatsOverview extends StatsOverviewWidget
 {
     protected function getStats(): array
     {
-        // Ambil total pesanan
         $totalOrders = Order::count();
 
-        // Pesanan pending
         $pendingOrders = Order::where('order_status', 'pending')->count();
 
-        // Pendapatan bulan ini (hanya yang sudah paid)
         $monthlyRevenue = Order::where('order_status', 'paid')
             ->whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)

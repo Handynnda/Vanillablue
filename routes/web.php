@@ -63,3 +63,7 @@ Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Link verifikasi sudah dikirim!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+//route login google
+Route::get('/login/google', [AuthController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallback']);

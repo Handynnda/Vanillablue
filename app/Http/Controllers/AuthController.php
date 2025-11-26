@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -17,26 +18,25 @@ class AuthController extends Controller
         return view('login');
     }
 
-public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        $user = Auth::user();
+            $user = Auth::user();
 
 
-        if ($user->role === 'admin') {
-            return redirect('/admin');
+            if ($user->role === 'admin') {
+                return redirect('/admin');
+            }
+
+            return redirect('/');
         }
 
-        return redirect('/');
+        return back()->with('error', 'Email atau password salah!');
     }
-
-    return back()->with('error', 'Email atau password salah!');
-    }
-
 
     public function logout(Request $request)
     {
@@ -123,4 +123,35 @@ public function login(Request $request)
             ? redirect()->route('login')->with('success', 'Password berhasil direset!')
             : back()->withErrors(['email' => [__($status)]]);
     }
+
+        // Redirect ke Google
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    // Handle callback dari Google
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+
+            // Cari user berdasarkan email, jika tidak ada buat baru
+            $user = User::firstOrCreate(
+                ['email' => $googleUser->getEmail()],
+                [
+                    'name' => $googleUser->getName(),
+                    'password' => Hash::make(Str::random(16)), // password random
+                    'role' => 'user', // default role user
+                ]
+            );
+
+            Auth::login($user, true);
+
+            return redirect('/'); // bisa diganti dashboard
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Login Google gagal!');
+        }
+    }
+
 }

@@ -54,9 +54,10 @@
 
         <p class="text-center mt-3">ATAU</p>
 
-        <button type="button" class="btn-google">
+        <button type="button" class="btn-google" onclick="window.location='{{ route('login.google') }}'">
           <img src="assets/images/googleicon.png" alt=""> GOOGLE
         </button>
+
 
         <div class="socials">
           <p>FOLLOW</p>
