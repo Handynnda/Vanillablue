@@ -110,6 +110,8 @@ body{
 
 .card:hover {
   transform: translateY(-6px);
+  background: linear-gradient(#657FA7, #222831);
+  color: #fff;
   box-shadow: 0 10px 24px rgba(0,0,0,.18);
 }
 
@@ -147,15 +149,20 @@ body{
 }
 
 .btn-booking {
-  background: #f9c600;
+  color: #fff !important;
+  background: #222831;
   border: none;
   padding: 10px 30px;
   font-weight: bold;
   cursor: pointer;
   border-radius: 6px;
   transition: 0.2s;
+  margin-top: auto;
+}
 
-  margin-top: auto; /* ✓ tombol selalu posisi paling bawah */
+.card:hover .btn-booking {
+  background: #f9c600;  
+  color: #000 !important;
 }
 
 .btn-booking:hover {

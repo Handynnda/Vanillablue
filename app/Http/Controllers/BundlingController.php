@@ -27,7 +27,6 @@ class BundlingController extends Controller
         $query = Bundling::orderBy('name_bundling');
 
         if (Schema::hasColumn('bundlings','category')) {
-            // cari fleksibel: exact, lower, slug, fallback ke name_bundling
             $query->where(function($q) use ($activeLabel, $activeSlug) {
                 $q->where('category', $activeLabel)
                   ->orWhereRaw('LOWER(category) = ?', [Str::lower($activeLabel)])
@@ -42,7 +41,7 @@ class BundlingController extends Controller
                   ->orWhereRaw('REPLACE(LOWER(name_bundling)," ", "-") = ?', [$activeSlug]);
             });
         } else {
-            // tidak ada kolom kategori — tampilkan semua (opsi awal)
+
         }
 
         $bundlings = $query->get()->map(function ($b) {
@@ -56,11 +55,15 @@ class BundlingController extends Controller
             'activeSlug'  => $activeSlug,
         ]);
     }
-
-    // (opsional) detail bundling
     public function show($id)
     {
         $bundling = Bundling::findOrFail($id);
         return view('bundlings.show', compact('bundling'));
+    }
+
+    public function showGaleri($id)
+    {
+        $bundling = Bundling::findOrFail($id);
+        return view('galeri.viewgaleri', compact('bundling'));
     }
 }

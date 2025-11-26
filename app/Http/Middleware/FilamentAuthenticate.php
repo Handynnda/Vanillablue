@@ -11,19 +11,14 @@ class FilamentAuthenticate
 {
     public function handle(Request $request, Closure $next)
     {
-        // Use the web guard (the application's normal login)
         $guard = Auth::guard('web');
 
         if (! $guard->check()) {
-            // Not logged in: redirect to the application's login page
             return redirect()->guest(route('login', ['redirect' => $request->fullUrl()]));
         }
 
         $user = $guard->user();
 
-        // Authorization check:
-        // 1) If user has a `role` attribute and it's `admin`, allow.
-        // 2) Otherwise, allow if user's email is in FILAMENT_ADMINS env list (comma separated).
         $isAdmin = false;
 
         if (isset($user->role) && Str::lower($user->role) === 'admin') {
@@ -39,7 +34,7 @@ class FilamentAuthenticate
         }
 
         if (! $isAdmin) {
-            abort(403, 'Anda tidak memiliki akses ke panel admin.');
+            abort(403, 'Anda tidak memiliki akses.');
         }
 
         return $next($request);

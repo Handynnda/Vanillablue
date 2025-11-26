@@ -14,9 +14,8 @@ Route::get('/contact',function(){return view('contact');});
 Route::get('/footer',function(){return view('footer');});
 Route::get('/header',function(){return view('header');});
 
-// Tampilan galeri tunggal — konten diisi dinamis oleh GalleryController
+
 Route::get('/galeri/detail', [GalleryController::class, 'index'])->name('galeri.detail');
-// Legacy routes kept for compatibility; redirect to single dynamic view with category
 Route::get('/galeri/baby', function () { return redirect()->route('galeri.detail', ['category' => 'baby']); });
 Route::get('/galeri/birthday', function () { return redirect()->route('galeri.detail', ['category' => 'birthday']); });
 Route::get('/galeri/couple', function () { return redirect()->route('galeri.detail', ['category' => 'couple']); });
@@ -26,6 +25,8 @@ Route::get('/galeri/prewed', function () { return redirect()->route('galeri.deta
 
 
 Route::get('/listharga', [BundlingController::class, 'index'])->name('listharga');
+Route::get('/galeri/{id}', [BundlingController::class, 'show'])->name('galeri.show');
+
 
 // AUTH 
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

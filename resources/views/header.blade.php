@@ -4,7 +4,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="assets/css/styleHeader.css">
+<link rel="stylesheet" href="{{ asset('assets/css/styleHeader.css') }}">
 
 <!-- HEADER -->
 <header class="navbar fixed-top py-3" style="background-color: #222831;">
@@ -12,7 +12,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
     <!-- Logo -->
     <div class="d-flex align-items-center">
-      <img src="assets/images/studiologo.jpg" alt="Logo" style="height: 36px; margin-right: 10px; border-radius: 50px">
+      <img src="{{ asset('assets/images/studiologo.jpg') }}" alt="Logo" style="height: 36px; margin-right: 10px; border-radius: 50px">
       <span class="text-white fw-bold">VanillaBlue Photostudio</span>
     </div>
 
