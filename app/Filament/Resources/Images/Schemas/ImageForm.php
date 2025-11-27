@@ -35,7 +35,6 @@ class ImageForm
                     ->image()
                     ->required()
                     ->disk('cloudinary') 
-                    // Set a non-dot directory so Cloudinary public_id doesn't become "./..."
                     ->directory('images')
                     ->getUploadedFileNameForStorageUsing(fn ($file) => uniqid('img_').'.'.$file->getClientOriginalExtension()),
             ]);

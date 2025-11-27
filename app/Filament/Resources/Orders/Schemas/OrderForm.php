@@ -14,12 +14,18 @@ class OrderForm
     {
         return $schema
             ->components([
-                TextInput::make('customer.name')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('bundling.name_bundling')
-                    ->required()
-                    ->numeric(),
+                Select::make('customer_id')
+                    ->label('Customer')
+                    ->relationship('customer', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Select::make('bundling_id')
+                    ->label('Paket')
+                    ->relationship('bundling', 'name_bundling')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 DatePicker::make('book_date')
                     ->required(),
                 TimePicker::make('book_time')
