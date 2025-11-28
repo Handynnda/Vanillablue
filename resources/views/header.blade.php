@@ -2,9 +2,10 @@
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="{{ asset('assets/css/styleHeader.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/styleHeader.css') }}?v={{ filemtime(public_path('assets/css/styleHeader.css')) }}">
 
 <!-- HEADER -->
 <header class="navbar fixed-top py-3" style="background-color: #222831;">
@@ -82,6 +83,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <a href="{{ route('login') }}" class="nav-link mt-3">Masuk</a>
       <a href="{{ route('register') }}" class="nav-link">Daftar</a>
     @endguest
+
+    @auth
+      <div class="nav-link mt-3">{{ Auth::user()->name }}</div>
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="nav-link text-danger" style="background:none;border:none;padding:10px 0;width:100%;text-align:left;">Keluar</button>
+      </form>
+    @endauth
   </div>
 </header>
 

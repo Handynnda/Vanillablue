@@ -5,23 +5,34 @@
 
   <div class="register-container">
     <h2>DAFTAR</h2>
+    @if (session('success'))
+      <div class="alert alert-success" style="margin:8px 0; color:#14532d; background:#dcfce7; padding:10px; border-radius:6px;">{{ session('success') }}</div>
+    @endif
+    @if (session('error'))
+      <div class="alert alert-danger" style="margin:8px 0; color:#7f1d1d; background:#fee2e2; padding:10px; border-radius:6px;">{{ session('error') }}</div>
+    @endif
+    @if ($errors->any())
+      <div class="alert alert-danger" style="margin:8px 0; color:#7f1d1d; background:#fee2e2; padding:10px; border-radius:6px;">
+        <ul style="margin:0 0 0 18px;">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
     <form action="{{ route('register') }}" method="POST" class="register-form">
       @csrf
       <div>
-        <label for="name">Username</label>
-        <input type="text" name="name" id="name" required>
+        <label for="name">Nama Lengkap</label>
+        <input type="text" name="name" id="name" value="{{ old('name') }}" required>
       </div>
       <div>
         <label for="phone">Nomor Kontak</label>
-        <input type="text" name="phone" id="phone" required>
+        <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required>
       </div>
       <div>
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div>
-        <label for="address">Alamat</label>
-        <input type="text" name="address" id="address" required>
+        <input type="email" name="email" id="email" value="{{ old('email') }}" required>
       </div>
       <div>
         <label for="password">Sandi</label>
@@ -33,6 +44,12 @@
       </div>
 
       <button type="submit" class="btn-daftar">Daftar</button>
+
+      <div style="margin: 12px 0; text-align:center;">
+        <a href="{{ route('login.google') }}" class="btn-google" style="display:inline-block;padding:10px 14px;border:1px solid #ddd;border-radius:6px;text-decoration:none;">
+          Daftar / Masuk dengan Google
+        </a>
+      </div>
 
       <p class="login-text">Sudah Punya Akun? <a href="{{ route('login') }}">Login</a></p>
 

@@ -9,6 +9,12 @@
   }
 }
 
+/* Konsistensi padding container header dengan section lain */
+.navbar .container {
+  padding-left: clamp(12px, 4vw, 24px);
+  padding-right: clamp(12px, 4vw, 24px);
+}
+
 /* Mobile menu */
 .mobile-menu {
   display: none;
@@ -26,6 +32,15 @@
   color: white;
   padding: 10px 0;
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+}
+
+/* Terapkan gaya yang sama untuk elemen berkelas nav-link (anchor atau button) */
+.mobile-menu .nav-link {
+  color: white;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: block;
 }
 
 .mobile-menu.show-menu {
@@ -46,4 +61,18 @@
   height: 3px;
   background: white;
   border-radius: 5px;
+}
+
+/* Penyesuaian tipografi & logo pada mobile */
+@media (max-width: 576px) {
+  .navbar {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  header .d-flex.align-items-center img {
+    height: 30px !important;
+  }
+  header .text-white.fw-bold {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+  }
 }

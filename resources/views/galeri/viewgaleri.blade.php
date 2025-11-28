@@ -1,6 +1,6 @@
 @include ('header')
 
-<link rel="stylesheet" href="{{ asset('assets/css/styleGaleri.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/styleGaleri.css') }}?v={{ filemtime(public_path('assets/css/styleGaleri.css')) }}">
 <section class="galeri-detail">
   <div class="container">
     <h1>{{ $title ?? 'Galeri Foto' }}</h1>
@@ -21,7 +21,7 @@
         <img src="{{ asset('assets/images/baby/baby3.jpg') }}" alt="fallback 3">
       </div>
     @endif
-    <a href="{{ route('galeri.detail') }}" class="back-button">← Kembali ke Galeri Utama</a>
+    <a href='/home' class="back-button">← Kembali ke Galeri Utama</a>
   </div>
 </section>
 

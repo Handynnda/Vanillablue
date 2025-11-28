@@ -28,6 +28,7 @@ class BookingController extends Controller
         'jam' => 'required',
         'tanggal' => 'required|date',
         'tipe' => 'required|in:indoor,outdoor',
+        'note' => 'nullable|string|max:255'
     ]);
 
         $paket = Bundling::findOrFail($request->paket_id);
@@ -42,6 +43,7 @@ class BookingController extends Controller
             'total_price' => $paket->price_bundling * ($request->sum_order ?? 1),
             'name'        => $request->nama, 
             'phone'       => $request->no_wa 
+            ,'note'       => $request->note
         ]);
 
         return redirect()->back()->with('success', 'Booking berhasil!');

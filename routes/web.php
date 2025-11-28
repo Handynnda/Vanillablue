@@ -47,6 +47,9 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+// Complete Register after Google
+Route::get('/register/complete', [AuthController::class, 'showCompleteRegisterForm'])->name('register.complete');
+Route::post('/register/complete', [AuthController::class, 'completeRegister'])->name('register.complete.post');
 
 // EMAIL VERIFICATION
 Route::get('/email/verify', function () {

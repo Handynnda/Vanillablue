@@ -56,21 +56,35 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',          // minimal 8 karakter
+                'confirmed',
+                'regex:/[A-Z]/',  // minimal 1 huruf kapital
+            ],
             'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
+        ], [
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.regex' => 'Password harus mengandung minimal 1 huruf kapital.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            // Use Laravel's hashed cast on the User model
+            'password' => $request->password,
             'phone' => $request->phone,
-            'address' => $request->address,
+            'role' => 'customer',
         ]);
 
-        // kirim email verifikasi
-        $user->sendEmailVerificationNotification();
+        // kirim email verifikasi (jangan blokir jika mail tidak terkonfigurasi)
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            // optional: log error
+        }
 
         return redirect('/login')->with('success', 'Pendaftaran berhasil! Silakan cek email untuk verifikasi.');
     }
@@ -93,13 +107,11 @@ class AuthController extends Controller
             : back()->withErrors(['email' => __($status)]);
     }
 
-    // Tampilkan form reset password
     public function showResetForm($token)
     {
         return view('auth.reset-password', ['token' => $token]);
     }
 
-    // Update password
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -124,34 +136,72 @@ class AuthController extends Controller
             : back()->withErrors(['email' => [__($status)]]);
     }
 
-        // Redirect ke Google
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
-    // Handle callback dari Google
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            $googleUser = Socialite::driver('google')->user();
 
-            // Cari user berdasarkan email, jika tidak ada buat baru
-            $user = User::firstOrCreate(
-                ['email' => $googleUser->getEmail()],
-                [
-                    'name' => $googleUser->getName(),
-                    'password' => Hash::make(Str::random(16)), // password random
-                    'role' => 'user', // default role user
-                ]
-            );
+            $existing = User::where('email', $googleUser->getEmail())->first();
+            if ($existing) {
+                Auth::login($existing, true);
+                return redirect('/');
+            }
 
-            Auth::login($user, true);
+            session([
+                'google_email' => $googleUser->getEmail(),
+                'google_name' => $googleUser->getName(),
+            ]);
 
-            return redirect('/'); // bisa diganti dashboard
+            return redirect()->route('register.complete');
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Login Google gagal!');
         }
+    }
+
+    public function showCompleteRegisterForm()
+    {
+        if (! session()->has('google_email')) {
+            return redirect()->route('login');
+        }
+
+        return view('auth.complete-register', [
+            'email' => session('google_email'),
+            'name' => session('google_name'),
+        ]);
+    }
+
+    public function completeRegister(Request $request)
+    {
+        $email = session('google_email');
+        if (! $email) {
+            return redirect()->route('login');
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        $user = User::firstOrCreate(
+            ['email' => $email],
+            [
+                'name' => $request->name,
+                // Generate a secure random password internally; user doesn't need to set it now
+                'password' => Str::random(40),
+                'phone' => $request->phone,
+                'role' => 'customer',
+            ]
+        );
+
+        session()->forget(['google_email', 'google_name']);
+        Auth::login($user, true);
+
+        return redirect('/');
     }
 
 }
