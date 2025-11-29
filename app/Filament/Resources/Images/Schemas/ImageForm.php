@@ -36,7 +36,8 @@ class ImageForm
                     ->required()
                     ->disk('cloudinary') 
                     ->directory('images')
-                    ->getUploadedFileNameForStorageUsing(fn ($file) => uniqid('img_').'.'.$file->getClientOriginalExtension()),
+                    ->preserveFilenames(false)
+                    // ->getUploadedFileNameForStorageUsing(fn ($file) => uniqid('img_').'.'.$file->getClientOriginalExtension()),
             ]);
     }
 }
