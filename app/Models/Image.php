@@ -13,11 +13,7 @@ class Image extends Model
 
     protected $fillable = ['category', 'url_image'];
 
-    /**
-     * Mutator: normalize url_image to a secure Cloudinary URL.
-     * Handles both UploadedFile/TemporaryUploadedFile objects and
-     * strings returned by the Cloudinary filesystem driver.
-     */
+
     public function setUrlImageAttribute($value)
     {
         // If already a URL string, store as-is

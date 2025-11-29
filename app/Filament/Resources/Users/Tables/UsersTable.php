@@ -34,8 +34,7 @@ class UsersTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('phone')
                     ->searchable(),
-                TextColumn::make('address')
-                    ->searchable(),
+                // Hapus kolom address karena tidak ada di schema users, agar pencarian tidak error
             ])
             ->filters([
                 //

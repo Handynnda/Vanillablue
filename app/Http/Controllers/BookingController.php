@@ -46,6 +46,6 @@ class BookingController extends Controller
             ,'note'       => $request->note
         ]);
 
-        return redirect()->back()->with('success', 'Booking berhasil!');
+        return redirect()->route('payment.create', ['order' => $order->id]);
     }
 }

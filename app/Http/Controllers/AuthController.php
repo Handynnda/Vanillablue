@@ -59,9 +59,9 @@ class AuthController extends Controller
             'password' => [
                 'required',
                 'string',
-                'min:8',          // minimal 8 karakter
+                'min:8',      
                 'confirmed',
-                'regex:/[A-Z]/',  // minimal 1 huruf kapital
+                'regex:/[A-Z]/',
             ],
             'phone' => 'required|string|max:20',
         ], [
@@ -73,29 +73,24 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            // Use Laravel's hashed cast on the User model
             'password' => $request->password,
             'phone' => $request->phone,
             'role' => 'customer',
         ]);
 
-        // kirim email verifikasi (jangan blokir jika mail tidak terkonfigurasi)
         try {
             $user->sendEmailVerificationNotification();
         } catch (\Throwable $e) {
-            // optional: log error
         }
 
         return redirect('/login')->with('success', 'Pendaftaran berhasil! Silakan cek email untuk verifikasi.');
     }
     
-        // Tampilkan form lupa password
     public function showForgotPasswordForm()
     {
         return view('auth.forgot-password');
     }
 
-    // Kirim email reset password
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -191,7 +186,6 @@ class AuthController extends Controller
             ['email' => $email],
             [
                 'name' => $request->name,
-                // Generate a secure random password internally; user doesn't need to set it now
                 'password' => Str::random(40),
                 'phone' => $request->phone,
                 'role' => 'customer',

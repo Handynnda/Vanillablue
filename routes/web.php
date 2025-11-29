@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BundlingController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {return view('home');});
 Route::get('/home',function(){return view('home');});
@@ -40,6 +41,9 @@ Route::get('/booking/{id}', [BookingController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('booking');
 Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+// PAYMENT
+Route::get('/payment/{order}', [PaymentController::class, 'create'])->middleware(['auth','verified'])->name('payment.create');
+Route::post('/payment', [PaymentController::class, 'store'])->middleware(['auth','verified'])->name('payment.store');
 
 // AUTH POST
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

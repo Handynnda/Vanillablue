@@ -19,6 +19,8 @@ class BundlingsTable
                 TextColumn::make('price_bundling')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('description_bundling')
+                    ->searchable(),
                 TextColumn::make('category')
                     ->badge(),
                 TextColumn::make('created_at')

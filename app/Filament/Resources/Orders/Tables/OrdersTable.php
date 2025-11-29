@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -14,10 +15,18 @@ class OrdersTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('customer.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('bundling.name_bundling')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('phone')
+                    ->label('No. WA')
+                    ->searchable(),
                 TextColumn::make('book_date')
                     ->date()
                     ->sortable(),
@@ -25,18 +34,21 @@ class OrdersTable
                     ->time()
                     ->sortable(),
                 TextColumn::make('location')
-                    ->badge(),
+                    ->badge()
+                    ->searchable(),
                 TextColumn::make('note')
                     ->searchable(),
                 TextColumn::make('order_status')
-                    ->badge(),
+                    ->badge()
+                    ->searchable(),
                 TextColumn::make('total_price')
                     ->money('IDR', true)
                     ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable(),
                 TextColumn::make('sum_order')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
