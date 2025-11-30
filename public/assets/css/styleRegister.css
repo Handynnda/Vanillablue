@@ -56,16 +56,64 @@
       background-color: #fff;
     }
 
+    .atau-wrapper {
+      grid-column: 1 / -1;
+      text-align: center;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .atau {
+      margin: -15;
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+    }  
+
+    .btn-google-wrapper {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .btn-google {
+      grid-column: 1 / -1;
+      background: #fff;
+      color: #333;
+      font-weight: 600;
+      border-radius: 20px;
+      border: none;
+      width: 50%;
+      margin: -27 auto;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-google img {
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    .btn-daftar-wrapper {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 50px;
+    }    
+
     .btn-daftar {
-      grid-column: 2 / 1;
-      margin-top: 20px;
+      grid-column: 1 / -1;
+      margin-top: 12px;
+      margin: 12px auto 0 auto;
       background-color: #00BFFF;
       color: #fff;
       font-weight: 600;
       padding: 12px 0;
-      width: 150px;
+      width: 50%;
       border: none;
-      border-radius: 4px;
+      border-radius: 20px;
       cursor: pointer;
       font-size: 15px;
       transition: 0.3s;
@@ -76,11 +124,12 @@
     }
 
     .login-text {
-      text-align: right;
+      grid-column: 1 / -1;
+      text-align: center;
       font-size: 13px;
       color: #ddd;
       margin-top: 10px;
-    }
+    }    
 
     .login-text a {
       color: #00BFFF;

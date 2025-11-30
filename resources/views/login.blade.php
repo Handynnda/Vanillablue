@@ -58,7 +58,6 @@
           <img src="assets/images/googleicon.png" alt=""> GOOGLE
         </button>
 
-
         <div class="socials">
           <p>FOLLOW</p>
           <a href="https://www.instagram.com/vanillablue_photostudio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="bi bi-instagram"></i></a>

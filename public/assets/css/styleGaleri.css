@@ -369,3 +369,16 @@ body {
 .cards-container::-webkit-scrollbar {
   display: none;
 }
+
+@media (min-width: 769px) {
+  .grid-galeri {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-galeri {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: 16px;
+  }
+}
