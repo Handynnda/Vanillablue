@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BundlingController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {return view('home');});
 Route::get('/home',function(){return view('home');});
@@ -41,6 +42,7 @@ Route::get('/booking/{id}', [BookingController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('booking');
 Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+
 // PAYMENT
 Route::get('/payment/{order}', [PaymentController::class, 'create'])->middleware(['auth','verified'])->name('payment.create');
 Route::post('/payment', [PaymentController::class, 'store'])->middleware(['auth','verified'])->name('payment.store');
@@ -51,6 +53,7 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
 // Complete Register after Google
 Route::get('/register/complete', [AuthController::class, 'showCompleteRegisterForm'])->name('register.complete');
 Route::post('/register/complete', [AuthController::class, 'completeRegister'])->name('register.complete.post');
@@ -74,3 +77,10 @@ Route::post('/email/verification-notification', function (Request $request) {
 //route login google
 Route::get('/login/google', [AuthController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+//logout admin
+Route::post('/logout', function () {
+    Auth::logout();
+
+    return redirect('/');
+})->name('logout');
