@@ -25,6 +25,11 @@ class PaymentsTable
                     ->searchable(),
                 TextColumn::make('payment_status')
                     ->badge()
+                    ->colors([
+                        'warning' => 'waiting',
+                        'success' => 'confirmed',
+                        'danger' => 'rejected',
+                    ])
                     ->searchable(),
                 TextColumn::make('payment_method')
                     ->searchable(),

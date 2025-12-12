@@ -6,12 +6,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Image extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = ['category', 'url_image'];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = self::generatePrefixedId('IMG');
+            }
+        });
+    }
+
+    protected static function generatePrefixedId(string $prefix): string
+    {
+        do {
+            $candidate = $prefix . Str::upper(Str::random(5));
+        } while (self::where('id', $candidate)->exists());
+        return $candidate;
+    }
 
 
     public function setUrlImageAttribute($value)

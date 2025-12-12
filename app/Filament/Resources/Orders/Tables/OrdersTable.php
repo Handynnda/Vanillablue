@@ -40,6 +40,11 @@ class OrdersTable
                     ->searchable(),
                 TextColumn::make('order_status')
                     ->badge()
+                    ->colors([
+                    'warning' => 'unpaid',
+                    'success' => 'paid',
+                    'danger' => 'failed',
+                    ])
                     ->searchable(),
                 TextColumn::make('total_price')
                     ->money('IDR', true)
