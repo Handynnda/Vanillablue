@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Storage;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class PaymentController extends Controller
 {
     public function create($orderId)
     {
         $order = Order::findOrFail($orderId);
+
         if ($order->customer_id !== Auth::id()) {
             abort(403);
         }
@@ -31,6 +32,7 @@ class PaymentController extends Controller
         ]);
 
         $order = Order::findOrFail($data['order_id']);
+
         if ($order->customer_id !== Auth::id()) {
             abort(403);
         }
@@ -41,8 +43,13 @@ class PaymentController extends Controller
                 $file = $request->file('proof_image');
                 $extension = strtolower($file->getClientOriginalExtension());
                 $basename = uniqid('pay_');
-                $stored = $file->storeAs('payments', $basename.'.'.$extension, 'cloudinary');
-                // Ambil public_id (tanpa ekstensi) sesuai pola di Image model
+
+                $stored = $file->storeAs(
+                    'payments', 
+                    $basename.'.'.$extension, 
+                    'cloudinary'
+                );
+
                 $info = pathinfo($stored);
                 $dirname = isset($info['dirname']) ? str_replace('\\', '/', $info['dirname']) : '';
                 $dirname = ($dirname === '.' ? '' : trim($dirname, '/'));
@@ -62,8 +69,11 @@ class PaymentController extends Controller
             }
         }
 
+        $paymentCode = 'PYM-' . strtoupper(Str::random(5));
+
         Payment::create([
             'order_id'       => $order->id,
+            'payment_code'   => $paymentCode,
             'amount'         => $data['amount'],
             'payment_status' => 'waiting',
             'payment_date'   => $data['payment_date'],

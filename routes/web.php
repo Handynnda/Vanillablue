@@ -9,12 +9,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BundlingController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PaymentController;
-<<<<<<< HEAD
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
-=======
-use Illuminate\Support\Facades\Auth;
->>>>>>> 28853b44cb56702190d42310540c3ea2aa073b21
 
 Route::get('/', function () {return view('home');});
 Route::get('/home',function(){return view('home');});

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Payments\Tables;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -54,6 +56,25 @@ class PaymentsTable
                 EditAction::make(),
             ])
             ->toolbarActions([
+                
+                Action::make('print_pdf')
+                ->label('Cetak PDF')
+                ->icon('heroicon-o-printer')
+                ->color('success')
+                ->action(function () {
+            
+                    $payments = \App\Models\Payment::with('order')->get();
+            
+                    return response()->streamDownload(
+                        function () use ($payments) {
+                            echo Pdf::loadView('pdf.payments', [
+                                'payments' => $payments,
+                            ])->output();
+                        },
+                        'laporan-payments.pdf'
+                    );
+                }),            
+
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
