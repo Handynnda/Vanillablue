@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\BundlingController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PaymentController;
@@ -37,23 +37,10 @@ Route::get('/galeri/prewed', function () { return redirect()->route('galeri.deta
 Route::get('/listharga', [BundlingController::class, 'index'])->name('listharga');
 Route::get('/galeri/{id}', [BundlingController::class, 'show'])->name('galeri.show');
 
-Route::middleware(['auth'])->group(function() {
-
-    // PROFILE MAIN PAGE
-    Route::get('/profile', [ProfileController::class, 'index'])
-         ->name('profile.index');
-
-    // KIRIM OTP
-    Route::post('/profile/send-otp', [ProfileController::class, 'sendOtp'])
-         ->name('profile.otp.send');
-
-    // HALAMAN VERIFIKASI OTP
-    Route::get('/profile/verify', [ProfileController::class, 'verifyOtpPage'])
-         ->name('profile.otp.page');
-
-    // UPDATE PASSWORD
-    Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])
-         ->name('profile.otp.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/send-otp', [ProfileController::class, 'sendOtp'])->name('profile.sendOtp');
 });
 
 
@@ -62,6 +49,17 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+
+Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])->name('password.forgot');
+Route::post('/forgot-password', [AuthController::class, 'sendOtp']);
+
+Route::get('/verify-otp', [AuthController::class, 'verifyOtpForm'])->name('otp.form');
+Route::get('/verify-otp', function () {return view('auth.verify-otp');})->name('otp.form');
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
+
+Route::get('/new-password', [AuthController::class, 'newPasswordForm'])->name('password.new');
+Route::post('/new-password', [AuthController::class, 'saveNewPassword']);
+
 
 // BOOKING (pakai ID paket)
 Route::get('/booking/{id}', [BookingController::class, 'index'])

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\PasswordOtp;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -142,10 +144,21 @@ class AuthController extends Controller
             $googleUser = Socialite::driver('google')->user();
 
             $existing = User::where('email', $googleUser->getEmail())->first();
+            // if ($existing) {
+            //     Auth::login($existing, true);
+            //     return redirect('/');
+            // }
             if ($existing) {
+                if (! $existing->email_verified_at) {
+                    $existing->update([
+                        'email_verified_at' => now()
+                    ]);
+                }
+            
                 Auth::login($existing, true);
                 return redirect('/');
             }
+            
 
             session([
                 'google_email' => $googleUser->getEmail(),
@@ -170,6 +183,33 @@ class AuthController extends Controller
         ]);
     }
 
+    // public function completeRegister(Request $request)
+    // {
+    //     $email = session('google_email');
+    //     if (! $email) {
+    //         return redirect()->route('login');
+    //     }
+
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'phone' => 'required|string|max:20',
+    //     ]);
+
+    //     $user = User::firstOrCreate(
+    //         ['email' => $email],
+    //         [
+    //             'name' => $request->name,
+    //             'password' => Str::random(40),
+    //             'phone' => $request->phone,
+    //             'role' => 'customer',
+    //         ]
+    //     );
+
+    //     session()->forget(['google_email', 'google_name']);
+    //     Auth::login($user, true);
+
+    //     return redirect('/');
+    // }
     public function completeRegister(Request $request)
     {
         $email = session('google_email');
@@ -182,15 +222,24 @@ class AuthController extends Controller
             'phone' => 'required|string|max:20',
         ]);
 
-        $user = User::firstOrCreate(
-            ['email' => $email],
-            [
+        $user = User::where('email', $email)->first();
+
+        if (! $user) {
+            $user = User::create([
                 'name' => $request->name,
-                'password' => Str::random(40),
+                'email' => $email,
+                'password' => Hash::make(Str::random(40)),
                 'phone' => $request->phone,
                 'role' => 'customer',
-            ]
-        );
+                'email_verified_at' => now(), // 🔥 PENTING
+            ]);
+        } else {
+            // kalau user sudah ada, pastikan datanya lengkap
+            $user->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+            ]);
+        }
 
         session()->forget(['google_email', 'google_name']);
         Auth::login($user, true);
@@ -198,4 +247,93 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+    public function forgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+
+    public function sendOtp(Request $request)
+    {
+        $user = auth()->user();
+    
+        $otp = rand(100000, 999999);
+    
+        DB::table('password_otps')->updateOrInsert(
+            ['email' => $user->email],
+            [
+                'otp' => $otp,
+                'expires_at' => now()->addMinutes(5),
+                'updated_at' => now(),
+                'created_at' => now(),
+            ]
+        );
+    
+        Mail::to($user->email)->send(new OtpMail($otp));
+    
+        // SIMPAN EMAIL KE SESSION
+        session(['email' => $user->email]);
+    
+        // PINDAH KE HALAMAN INPUT OTP
+        return redirect()->route('otp.form')
+            ->with('success', 'Kode OTP telah dikirim ke email Anda');
+    }
+    
+
+    public function verifyOtpForm()
+    {
+        if (!session('otp_email')) {
+            return redirect()->route('password.forgot');
+        }
+
+        return view('auth.verify-otp');
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required'
+        ]);
+    
+        $record = PasswordOtp::where('email', session('otp_email'))
+            ->where('otp', $request->otp)
+            ->where('expires_at', '>', now())
+            ->first();
+    
+        if (! $record) {
+            return back()->with('error', 'OTP salah atau kadaluarsa');
+        }
+    
+        $record->delete();
+        session(['otp_verified' => true]);
+    
+        return redirect()->route('password.new');
+    }
+    
+    public function newPasswordForm()
+    {
+        if (! session('otp_verified')) {
+            abort(403);
+        }
+    
+        return view('auth.new-password');
+    }
+
+    public function saveNewPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:8|confirmed'
+        ]);
+    
+        $email = session('otp_email');
+    
+        User::where('email', $email)->update([
+            'password' => Hash::make($request->password)
+        ]);
+    
+        session()->forget(['otp_email', 'otp_verified']);
+    
+        return redirect('/login')->with('success', 'Password berhasil diubah');
+    }
+        
 }

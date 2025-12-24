@@ -11,10 +11,11 @@
       <div style="background: #00BFFF; padding: 8px; border-radius: 4px; text-align:center;">{{ session('status') }}</div> 
     @endif
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <form method="POST" action="{{ route('otp.send') }}">
       @csrf
       <input type="email" name="email" placeholder="Email" required>
-      <button type="submit" class="btn-submit">Kirim Link Reset Password</button>
+      <button type="submit" class="btn-submit">Kirim Kode OTP
+</button>
     </form>
 
     <p class="login-text">

@@ -2,67 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Hash;
-
-
-
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        return view('profile.profile', compact('user'));
+        return view('profile.index', [
+            'user' => Auth::user()
+        ]);
     }
 
-    // 1. KIRIM OTP KE EMAIL
-    public function sendOtp()
-    {
-        $otp = rand(100000, 999999);
-        session(['otp_code' => $otp]);
-
-        // Contoh email — bisa kamu sesuaikan
-        Mail::raw("Kode OTP Anda adalah: " . $otp, function ($message) {
-            $message->to(Auth::user()->email)
-                    ->subject("Kode OTP Verifikasi");
-        });
-
-        return redirect()->route('profile.otp.page')
-                         ->with('success', 'Kode OTP telah dikirim ke email Anda.');
-    }
-
-    // 2. TAMPILKAN HALAMAN VERIFIKASI OTP + GANTI PASSWORD
-    public function verifyOtpPage()
-    {
-        return view('profile.verifikasi');
-    }
-
-    // 3. UPDATE PASSWORD
-    public function updatePassword(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'otp' => 'required|numeric',
-            'password' => 'required|min:8|confirmed',
+            'name'  => 'required|string|max:100',
+            'email' => 'required|email',
+            'phone' => 'nullable|string|max:20',
         ]);
+    
+        $user = auth()->user();
+    
+        $user->update([
+            'name'  => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+        ]);
+    
+        return back()->with('success', 'Profil berhasil diperbarui');
+    }
+    
 
-        if ($request->otp != session('otp_code')) {
-            return back()->withErrors(['otp' => 'Kode OTP tidak valid.']);
-        }
-
-        // Update password user
-        /** @var \App\Models\User $user */
+    public function sendOtp()
+    {
         $user = Auth::user();
-        $user->password = Hash::make($request->password);
-        $user->save();
+        $otp = rand(100000, 999999);
 
-        // Hapus OTP dari session
-        session()->forget('otp_code');
+        // simpan OTP 5 menit
+        Cache::put('otp_'.$user->id, $otp, now()->addMinutes(5));
 
-        return redirect()->route('profile.index')
-                         ->with('success', 'Password berhasil diperbarui.');
+        Mail::raw(
+            "Kode OTP Anda: $otp\nBerlaku selama 5 menit.",
+            function ($message) use ($user) {
+                $message->to($user->email)
+                        ->subject('Kode OTP Perubahan Password');
+            }
+        );
+
+        return back()->with('success', 'Kode OTP berhasil dikirim ke email Anda');
     }
 }

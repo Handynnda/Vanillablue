@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+    font-family: 'arial', sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #f4f5f7;
+}
+
+.container,
+.card,
+.row {
+    all: unset;
+}
+
+/* HEADER */
+.profile-header {
+    background: linear-gradient(180deg, #2e3238, #1f2227);
+    color: white;
+    padding: 50px 40px 80px;
+    border-radius: 0 0 32px 32px;
+    padding-top: 120px;
+}
+
+.profile-wrapper {
+    min-height: 100vh;
+}
+
+.profile-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.profile-header p {
+    margin-top: 6px;
+    color: #cfcfcf;
+}
+
+/* BODY */
+.profile-body {
+    display: flex;
+    gap: 24px;
+    padding: 30px 40px;
+    margin-top: -60px;
+}
+
+/* SIDEBAR */
+.profile-sidebar {
+    width: 300px;
+}
+
+.user-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+.user-card-menu {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 25px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    background: #f5c45b;
+    color: #000;
+    border-radius: 50%;
+    font-size: 36px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.user-card h3 {
+    margin: 14px 0 4px;
+}
+
+.email {
+    font-size: 14px;
+    color: #777;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    background: #929292;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* MENU */
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.sidebar-menu li {
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #eaeaea;
+    padding-left: 10px;
+    border: none;
+}
+
+.sidebar-menu li i {
+    width: 18px;
+    text-align: center;
+}
+
+
+.sidebar-menu .active {
+    background: #1f2227;
+    border-radius: 6px;
+    color: white;
+}
+
+.sidebar-menu .logout {
+    color: #e63946;
+}
+
+/* CONTENT */
+.profile-content {
+    flex: 1;
+}
+
+.content-card {
+    background: white;
+    border-radius: 18px;
+    padding: 26px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.card-title {
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* FORM */
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.action-right {
+    text-align: right;
+}
+
+/* BUTTON */
+.btn-dark {
+    background: #1f2227;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* SECURITY */
+.security-box {
+    text-align: center;
+}
+
+.lock-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.security-box h4 {
+    margin-bottom: 6px;
+}
+
+.security-box p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+}
