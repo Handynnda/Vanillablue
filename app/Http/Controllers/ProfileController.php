@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +26,7 @@ class ProfileController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
     
-        $user = auth()->user();
+        $user = User::find(Auth::id());
     
         $user->update([
             'name'  => $request->name,

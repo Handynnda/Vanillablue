@@ -49,7 +49,7 @@
         <div class="bottom-links">
           
           <a href="{{ route('register') }}">Belum Punya Akun?</a>
-          <a href="{{ route('password.request') }}">Lupa Kata Sandi</a>
+          <a href="{{ route('password.forgot') }}">Lupa sandi?</a>   
         </div>
 
         <p class="text-center mt-3">ATAU</p>

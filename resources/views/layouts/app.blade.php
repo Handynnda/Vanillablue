@@ -46,6 +46,7 @@
     <section class="auth-section">
         <div class="auth-container">
             @yield('content')
+            @yield('scripts')
         </div>
     </section>
 </body>
