@@ -36,26 +36,26 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //     static::creating(function ($model) {
-    //         if (empty($model->id)) {
-    //             $model->id = self::generatePrefixedId('UID');
-    //         }
-    //     });
-    // }
-
-    // protected static function generatePrefixedId(string $prefix): string
-    // {
-    //     do {
-    //         $candidate = $prefix . Str::upper(Str::random(5));
-    //     } while (self::where('id', $candidate)->exists());
-    //     return $candidate;
-    // }
-
+    
     public function orders()
     {
         return $this->hasMany(Order::class, 'customer_id');
     }
 }
+// protected static function boot()
+// {
+//     parent::boot();
+//     static::creating(function ($model) {
+//         if (empty($model->id)) {
+//             $model->id = self::generatePrefixedId('UID');
+//         }
+//     });
+// }
+
+// protected static function generatePrefixedId(string $prefix): string
+// {
+//     do {
+//         $candidate = $prefix . Str::upper(Str::random(5));
+//     } while (self::where('id', $candidate)->exists());
+//     return $candidate;
+// }

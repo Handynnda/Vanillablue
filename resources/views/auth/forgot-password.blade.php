@@ -15,15 +15,16 @@
         @csrf
         <input type="email" name="email" placeholder="Email terdaftar" required>
 
-        <button type="submit">
+        <button class="btn-submit2" type="submit">
             Kirim kode OTP
         </button>
     </form>
+    
 
     <p class="login-text">
       <a href="{{ route('login') }}">Kembali ke Login</a>
     </p>
-    
+
   </div>
 </section>
 @endsection

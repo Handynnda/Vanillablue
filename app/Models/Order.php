@@ -52,6 +52,11 @@ class Order extends Model
         return $this->belongsTo(Paket::class, 'bundling_id');
     }
 
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'order_id');
+    }
+
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');

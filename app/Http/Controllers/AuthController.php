@@ -105,6 +105,16 @@ class AuthController extends Controller
         return view('auth.reset-password');
     }
     
+    public function showResetPasswordForm()
+    {
+        if (! session()->has('otp_verified')) {
+            return redirect()->route('password.forgot')
+                ->withErrors('Silakan verifikasi OTP terlebih dahulu.');
+        }
+
+        return view('auth.reset-password');
+    }
+
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -230,14 +240,19 @@ class AuthController extends Controller
         $otp = rand(100000, 999999);
 
         session([
-            'reset_email' => $request->email,
-            'reset_otp' => $otp,
-            'otp_expired_at' => now()->addMinutes(5),
+            'otp_email' => $request->email,
+            'otp_context' => 'forgot',
         ]);
+
+        // session([
+        //     'reset_email' => $request->email,
+        //     'reset_otp' => $otp,
+        //     'otp_expired_at' => now()->addMinutes(5),
+        // ]);
 
         Mail::to($request->email)->send(new OtpMail($otp));
 
-        return redirect()->route('otp.form')
+        return redirect()->route('password.otp.form')
             ->with('success', 'Kode OTP telah dikirim ke email.');
     }
 
@@ -264,8 +279,9 @@ class AuthController extends Controller
             'otp_context' => 'forgot',
         ]);
 
-        return redirect()->route('otp.form');
-    }
+        return redirect()->route('password.otp.form')
+            ->with('success', 'Kode OTP telah dikirim ke email.');
+        }
 
     public function sendOtpFromProfile()
     {
@@ -280,6 +296,7 @@ class AuthController extends Controller
                 'expires_at' => now()->addMinutes(5),
             ]
         );
+        
 
         Mail::to($user->email)->send(new OtpMail($otp));
 
@@ -330,7 +347,6 @@ class AuthController extends Controller
             'otp' => 'required',
         ]);
 
-        // ambil OTP dari DB (karena resend pakai PasswordOtp)
         $record = PasswordOtp::where('email', session('otp_email'))->first();
 
         if (
@@ -348,7 +364,6 @@ class AuthController extends Controller
             'otp_verified' => true
         ]);
 
-        // opsional: hapus OTP dari DB
         $record->delete();
 
         return redirect()->route('password.new');

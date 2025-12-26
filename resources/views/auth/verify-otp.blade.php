@@ -5,7 +5,8 @@
 <section class="auth-section">
 <link rel="stylesheet" href="{{ asset('assets/css/styleForgetpass.css') }}">
 <div>
-<form method="POST">
+    
+<form method="POST" action="{{ route('password.otp.verify') }}">
   @csrf
   <H1>masukan kode OTP</H1>
   <input type="text" name="otp" placeholder="Kode OTP" required>
