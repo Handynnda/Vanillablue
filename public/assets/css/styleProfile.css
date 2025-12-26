@@ -1,0 +1,73 @@
+/* public/css/profile.css */
+
+.profile-banner {
+    background: linear-gradient(135deg, #222831 0%, #393E46 100%);
+    height: 250px;
+    border-radius: 0 0 50px 50px; /* Lengkungan bawah */
+    position: relative;
+}
+
+.profile-avatar-container {
+    position: relative;
+    margin-top: -75px; /* Efek Overlapping (Naik ke atas) */
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #ffffff; /* Border putih tebal */
+    background-color: #FFD369; /* Warna aksen kuning */
+    color: #222831;
+    font-size: 3.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.menu-link:hover {
+    background-color: #f8f9fa;
+    color: #222831;
+    transform: translateX(5px); /* Animasi geser dikit */
+}
+
+.menu-link.active {
+    background-color: #222831; /* Hitam VanillaBlue */
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(34, 40, 49, 0.3);
+}
+
+.menu-link i {
+    width: 25px;
+    font-size: 1.2rem;
+}
+
+.form-control-custom {
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    padding: 12px 15px;
+    border-radius: 10px;
+}
+
+.form-control-custom:focus {
+    background-color: #fff;
+    border-color: #FFD369; /* Fokus Kuning */
+    box-shadow: 0 0 0 4px rgba(255, 211, 105, 0.1);
+}

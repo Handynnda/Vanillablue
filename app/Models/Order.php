@@ -12,10 +12,8 @@ class Order extends Model
 {
     use HasFactory;
 
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = [
+        'order_code',
         'customer_id',
         'bundling_id',
         'book_date',
@@ -32,18 +30,20 @@ class Order extends Model
     protected static function boot()
     {
         parent::boot();
+
         static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = self::generatePrefixedId('ORD');
+            if (empty($model->order_code)) {
+                $model->order_code = self::generatePrefixedCode('ORD');
             }
         });
     }
 
-    protected static function generatePrefixedId(string $prefix): string
+    protected static function generatePrefixedCode(string $prefix): string
     {
         do {
             $candidate = $prefix . Str::upper(Str::random(5));
-        } while (self::where('id', $candidate)->exists());
+        } while (self::where('order_code', $candidate)->exists());
+
         return $candidate;
     }
 

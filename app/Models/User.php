@@ -10,17 +10,10 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // public $incrementing = false;
+    // protected $keyType = 'string';
     protected $fillable = [
         'name',
         'email',
@@ -30,21 +23,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -53,23 +36,23 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = self::generatePrefixedId('UID');
-            }
-        });
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($model) {
+    //         if (empty($model->id)) {
+    //             $model->id = self::generatePrefixedId('UID');
+    //         }
+    //     });
+    // }
 
-    protected static function generatePrefixedId(string $prefix): string
-    {
-        do {
-            $candidate = $prefix . Str::upper(Str::random(5));
-        } while (self::where('id', $candidate)->exists());
-        return $candidate;
-    }
+    // protected static function generatePrefixedId(string $prefix): string
+    // {
+    //     do {
+    //         $candidate = $prefix . Str::upper(Str::random(5));
+    //     } while (self::where('id', $candidate)->exists());
+    //     return $candidate;
+    // }
 
     public function orders()
     {

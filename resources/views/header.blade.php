@@ -47,7 +47,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             {{ Auth::user()->name }}
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="#">Profil</a></li>
+            <li><a class="dropdown-item" href="{{ route('profile.index') }}">Profil</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <form action="{{ route('logout') }}" method="POST" style="display: inline;">
