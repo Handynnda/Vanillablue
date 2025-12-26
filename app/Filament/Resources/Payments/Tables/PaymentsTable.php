@@ -21,6 +21,8 @@ class PaymentsTable
                     ->searchable(),
                 TextColumn::make('amount')
                     ->numeric()
+                    ->money('IDR', true)
+                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('payment_status')

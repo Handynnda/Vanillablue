@@ -18,6 +18,8 @@ class BundlingsTable
                     ->searchable(),
                 TextColumn::make('price_bundling')
                     ->numeric()
+                    ->money('IDR', true)
+                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable(),
                 TextColumn::make('description_bundling')
                     ->searchable(),
