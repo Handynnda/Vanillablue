@@ -13,6 +13,20 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])
+    ->name('password.email');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [ResetPasswordController::class, 'store'])
+    ->name('password.update');
 
 /*
 |--------------------------------------------------------------------------
@@ -68,11 +82,6 @@ Route::middleware('guest')->group(function () {
     /*
     | Forgot Password + OTP (LOGIN)
     */
-    
-    // Route::post('/forgot-password/reset-password', [AuthController::class, 'resetPassword'])
-    // ->name('password.update');
-    // Route::get('/forgot-password/new-password',[AuthController::class, 'showResetPasswordForm'])
-    //     ->name('password.new');
     
     Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])
     ->name('password.forgot');
