@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 
+
 /*
 |--------------------------------------------------------------------------
 | HALAMAN UMUM
@@ -60,7 +61,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::get('/register', [AuthController::class, 'showRegisterForm'])
-        ->name('register');
+    ->name('register');
 
     Route::post('/register', [AuthController::class, 'register']);
 
@@ -68,31 +69,47 @@ Route::middleware('guest')->group(function () {
     | Forgot Password + OTP (LOGIN)
     */
     
-    Route::post('/forgot-password/reset-password', [AuthController::class, 'resetPassword'])
-    ->name('password.update');
+    // Route::post('/forgot-password/reset-password', [AuthController::class, 'resetPassword'])
+    // ->name('password.update');
+    // Route::get('/forgot-password/new-password',[AuthController::class, 'showResetPasswordForm'])
+    //     ->name('password.new');
     
     Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])
     ->name('password.forgot');
     
     Route::post('/forgot-password', [AuthController::class, 'sendOtpForgotPassword'])
     ->name('password.forgot.send');
-    
+
     Route::get('/forgot-password/verify-otp', [AuthController::class, 'verifyOtpForm'])
     ->name('password.otp.form');
     
     Route::post('/forgot-password/verify-otp', [AuthController::class, 'verifyOtp'])
     ->name('password.otp.verify');
+    
+    Route::get('/forgot-password/new-password', [AuthController::class, 'newPasswordForm'])
+        ->name('password.new');
+
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])
+    ->name('password.email');
 
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])
         ->name('password.reset');
 
+    Route::post('/forgot-password/reset-password', [AuthController::class, 'saveNewPassword'])
+        ->name('password.update');
+  
+    Route::post('/resend-otp', [AuthController::class, 'resendOtp'])
+        ->name('otp.resend');
 });
 
-Route::get('/forgot-password/new-password',[AuthController::class, 'showResetPasswordForm'])
-    ->name('password.new');
+    Route::middleware('auth')->get('/profile/change-password', function () {
+        if (! session('otp_verified')) {
+            return redirect()->route('profile.index');
+        }
 
-Route::post('/resend-otp', [AuthController::class, 'resendOtp'])
-    ->name('otp.resend');
+        return view('profile.profile-change-password');
+    })->name('profile.password.form');
+
 /*
 |--------------------------------------------------------------------------
 | AUTH (LOGIN GOOGLE)
@@ -172,6 +189,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/profile/verify-otp', [AuthController::class, 'verifyOtpProfile'])
         ->name('profile.otp.verify');
+
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.password.update');
 });
 
 /*
@@ -223,3 +243,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 */
 // Route::get('/verify-otp', [AuthController::class, 'verifyOtpForm'])->name('otp.form');
 // Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
+// Route::post('/profile/verify-otp', [AuthController::class, 'verifyOtpProfile'])
+//     ->name('profile.otp.verify');
+

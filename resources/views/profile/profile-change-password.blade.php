@@ -8,31 +8,15 @@
             <div class="card border-0 shadow-lg rounded-4">
                 <div class="card-body p-5">
                     
-                    <h4 class="fw-bold text-center mb-4">Verifikasi & Ganti Password</h4>
+                    <h4 class="fw-bold text-center mb-4">Ganti Password</h4>
 
                     @if(session('success'))
                         <div class="alert alert-success small mb-4">
                             <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
                         </div>
                     @endif
-
-                    <form action="{{ route('profile.otp.update') }}" method="POST">
+                    <form method="POST" action="{{ route('profile.password.update') }}">
                         @csrf
-                        @method('PUT')
-
-                        {{-- INPUT OTP --}}
-                        <div class="mb-4 text-center">
-                            <label class="form-label small fw-bold text-muted mb-2">Kode OTP dari Email</label>
-                            <input type="text" name="otp" 
-                                   class="form-control text-center fw-bold fs-4 text-primary @error('otp') is-invalid @enderror" 
-                                   maxlength="6" 
-                                   placeholder="000000" 
-                                   style="letter-spacing: 8px;" 
-                                   required autofocus>
-                            @error('otp') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
-
-                        <hr class="my-4">
 
                         {{-- INPUT PASSWORD BARU --}}
                         <div class="mb-3">
@@ -61,4 +45,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+
+</script>
 @endsection

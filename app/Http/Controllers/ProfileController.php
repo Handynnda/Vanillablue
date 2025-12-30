@@ -5,12 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
+
+    public function updatePassword(Request $request)
+    {
+        if (! session('otp_verified')) {
+            return redirect()->route('profile.index');
+        }
+
+        $request->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::findOrFail(Auth::id());
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        session()->forget('otp_verified');
+
+        return redirect()
+            ->route('profile.index')
+            ->with('success', 'Password berhasil diperbarui');
+    }
+
     public function index()
     {
         return view('profile.index', [

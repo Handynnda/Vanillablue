@@ -13,13 +13,11 @@
 
     <form method="POST" action="{{ route('password.forgot.send') }}">
         @csrf
-        <input type="email" name="email" placeholder="Email terdaftar" required>
-
+        <input type="email" name="email" placeholder="masukan Email terdaftar" required>
         <button class="btn-submit2" type="submit">
-            Kirim kode OTP
+            Kirim link reset password
         </button>
     </form>
-    
 
     <p class="login-text">
       <a href="{{ route('login') }}">Kembali ke Login</a>

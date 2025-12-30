@@ -91,7 +91,7 @@
                                         $payTextClass = match($payStatus) {
                                             'paid' => 'text-success',
                                             'failed' => 'text-danger',
-                                            default => 'text-warning', // Pending
+                                            default => 'text-warning',
                                         };
                                         
                                         $payLabel = match($payStatus) {

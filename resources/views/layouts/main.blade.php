@@ -28,6 +28,7 @@
 
     <main>
         @yield('container')
+        @yield('scripts')
     </main>
 
   </body>
