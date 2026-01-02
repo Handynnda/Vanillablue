@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf; // <--- WAJIB: Tambahkan ini untuk PDF
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    // --- Method Bawaan Anda (Biarkan saja) ---
     public function index()
     {
         $orders = Order::latest()->get();
@@ -24,44 +24,45 @@ class OrderController extends Controller
         return back()->with('success', 'Status berhasil diperbarui');
     }
 
-    // --- TAMBAHAN BARU: Method Cetak PDF ---
     public function printOrder(Request $request)
     {
-        // 1. Ambil inputan filter dari URL (dikirim dari Filament)
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $status = $request->input('status');
 
-        // 2. Siapkan Query
-        // Gunakan 'with' agar loading data relasi lebih cepat (Optimasi)
         $query = Order::with(['customer', 'bundling']);
 
-        // 3. Filter Tanggal (jika ada input)
         if ($startDate && $endDate) {
-            // Filter berdasarkan 'book_date' (tanggal booking foto)
             $query->whereBetween('book_date', [$startDate, $endDate]);
         }
 
-        // 4. Filter Status (jika bukan 'all')
         if ($status && $status !== 'all') {
             $query->where('order_status', $status);
         }
 
-        // 5. Ambil data & Urutkan dari tanggal terlama ke terbaru
         $orders = $query->orderBy('book_date', 'asc')->get();
 
-        // 6. Generate PDF
-        // Pastikan nama file view sesuai: resources/views/pdf/order.blade.php
         $pdf = Pdf::loadView('pdf.order', [
             'orders' => $orders,
             'startDate' => $startDate,
             'endDate' => $endDate,
         ]);
 
-        // Set ukuran kertas A4 Portrait
         $pdf->setPaper('a4', 'portrait');
 
-        // 7. Tampilkan di browser (Stream)
         return $pdf->stream('laporan-order.pdf');
     }
+
+    public function myOrders()
+    {
+        $orders = Order::with(['bundling', 'payment'])
+            ->where('customer_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('profile.histori', compact('orders'));
+    }
 }
+    
+
+

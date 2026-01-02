@@ -39,9 +39,12 @@
 
             <div class="user-card-menu">
                 <ul class="sidebar-menu">
-                    <li class="active">Profil Saya</li>
-                    <li>Riwayat Pesanan</li>
-
+                    <li>Profil Saya</li>
+                    <li>
+                        <a href="{{ route('orders.my') }}">
+                            Riwayat Pesanan
+                        </a>
+                    </li>
                     {{-- LOGOUT --}}
                     <li class="logout">
                         <form method="POST" action="{{ route('logout') }}">

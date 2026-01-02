@@ -43,7 +43,13 @@ class Order extends Model
         return $this->belongsTo(Bundling::class, 'bundling_id');
     }
 
-    public function customer() {
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'order_id');
+    }
+
+    public function customer()
+    {
         return $this->belongsTo(User::class, 'customer_id');
     }
 }

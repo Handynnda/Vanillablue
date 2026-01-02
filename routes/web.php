@@ -4,138 +4,253 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\BookingController;
+
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BundlingController;
 use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {return view('home');});
-Route::get('/home',function(){return view('home');});
-Route::get('/contact',function(){return view('contact');});
-Route::get('/footer',function(){return view('footer');});
-Route::get('/header',function(){return view('header');});
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
-Route::get('/update', [OrderController::class, 'index'])
-    ->name('orders.index');
-Route::post('/profile/update', [ProfileController::class, 'update'])
-    ->name('profile.update');
-Route::get('/orders', [OrderController::class, 'index'])
-    ->name('orders.index');
-Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])
-    ->name('orders.update-status');
-Route::get('/galeri/detail', [GalleryController::class, 'index'])
-    ->name('galeri.detail');
-Route::get('/galeri/baby', function () { return redirect()
-    ->route('galeri.detail', ['category' => 'baby']); });
-Route::get('/galeri/birthday', function () { return redirect()
-    ->route('galeri.detail', ['category' => 'birthday']); });
-Route::get('/galeri/couple', function () { return redirect()
-    ->route('galeri.detail', ['category' => 'couple']); });
-Route::get('/galeri/family', function () { return redirect()
-    ->route('galeri.detail', ['category' => 'family']); });
-Route::get('/galeri/graduation', function () { return redirect()
-    ->route('galeri.detail', ['category' => 'graduation']); });
-Route::get('/galeri/prewed', function () { return redirect()
-    ->route('galeri.detail', ['category' => 'prewed']); });
+Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])
+    ->name('password.request');
 
+Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])
+    ->name('password.email');
 
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [ResetPasswordController::class, 'store'])
+    ->name('password.update');
+
+/*
+|--------------------------------------------------------------------------
+| HALAMAN UMUM
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn () => view('home'));
+Route::get('/home', fn () => view('home'));
+Route::get('/contact', fn () => view('contact'));
+Route::get('/header', fn () => view('header'));
+Route::get('/footer', fn () => view('footer'));
+
+/*
+|--------------------------------------------------------------------------
+| GALERI & LIST HARGA
+|--------------------------------------------------------------------------
+*/
 Route::get('/listharga', [BundlingController::class, 'index'])
     ->name('listharga');
-Route::get('/galeri/{id}', [BundlingController::class, 'show'])
-    ->name('galeri.show');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])
-        ->name('profile.index');
-    Route::post('/profile/update', [ProfileController::class, 'update'])
-        ->name('profile.update');
-    Route::post('/profile/send-otp', [AuthController::class, 'sendOtpFromProfile'])
-        ->name('profile.sendOtp');
+
+Route::get('/galeri/{category}', [GalleryController::class, 'index'])
+    ->name('galeri.detail');
+
+Route::prefix('galeri')->group(function () {
+    Route::get('/baby', fn () => redirect()->route('galeri.detail', ['category' => 'baby']));
+    Route::get('/birthday', fn () => redirect()->route('galeri.detail', ['category' => 'birthday']));
+    Route::get('/couple', fn () => redirect()->route('galeri.detail', ['category' => 'couple']));
+    Route::get('/family', fn () => redirect()->route('galeri.detail', ['category' => 'family']));
+    Route::get('/graduation', fn () => redirect()->route('galeri.detail', ['category' => 'graduation']));
+    Route::get('/prewed', fn () => redirect()->route('galeri.detail', ['category' => 'prewed']));
 });
 
+/*
+|--------------------------------------------------------------------------
+| AUTH (GUEST)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->group(function () {
 
-// AUTH 
-Route::get('/login', [AuthController::class, 'showLoginForm'])
-    ->name('login');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])
+    Route::get('/login', [AuthController::class, 'showLoginForm'])
+        ->name('login');
+
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])
     ->name('register');
-Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])
-    ->name('password.reset');
-Route::get('/new-password', [AuthController::class, 'newPasswordForm'])
-    ->name('password.new');
-Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])
-    ->name('password.forgot')
-    ->middleware('guest');
-Route::post('/forgot-password', [AuthController::class, 'sendOtpForgotPassword'])
-    ->name('password.forgot.send')
-    ->middleware('guest');
-Route::get('/verify-otp', [AuthController::class, 'verifyOtpForm'])
-    ->name('otp.form')
-    ->middleware('guest');   
-Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])
-    ->name('otp.verify')
-    ->middleware('auth');
-Route::post('/resend-otp', [AuthController::class, 'resendOtp'])
-    ->name('otp.resend');
-Route::post('/new-password', [AuthController::class, 'saveNewPassword']);
 
-// BOOKING (pakai ID paket)
-// Bungkus dalam group agar konsisten
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/booking/{id}', [BookingController::class, 'index'])->name('booking');
-    Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+    Route::post('/register', [AuthController::class, 'register']);
+
+    /*
+    | Forgot Password + OTP (LOGIN)
+    */
+    
+    Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])
+    ->name('password.forgot');
+    
+    Route::post('/forgot-password', [AuthController::class, 'sendOtpForgotPassword'])
+    ->name('password.forgot.send');
+
+    Route::get('/forgot-password/verify-otp', [AuthController::class, 'verifyOtpForm'])
+    ->name('password.otp.form');
+    
+    Route::post('/forgot-password/verify-otp', [AuthController::class, 'verifyOtp'])
+    ->name('password.otp.verify');
+    
+    Route::get('/forgot-password/new-password', [AuthController::class, 'newPasswordForm'])
+        ->name('password.new');
+
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])
+    ->name('password.email');
+
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])
+        ->name('password.reset');
+
+    Route::post('/forgot-password/reset-password', [AuthController::class, 'saveNewPassword'])
+        ->name('password.update');
+  
+    Route::post('/resend-otp', [AuthController::class, 'resendOtp'])
+        ->name('otp.resend');
 });
 
-// PAYMENT
-Route::get('/payment/{order}', [PaymentController::class, 'create'])
-    ->middleware(['auth','verified'])->name('payment.create');
-Route::post('/payment', [PaymentController::class, 'store'])
-    ->middleware(['auth','verified'])->name('payment.store');
+    Route::middleware('auth')->get('/profile/change-password', function () {
+        if (! session('otp_verified')) {
+            return redirect()->route('profile.index');
+        }
 
-// AUTH POST
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])
-    ->name('password.update');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+        return view('profile.profile-change-password');
+    })->name('profile.password.form');
 
-// Complete Register after Google
+/*
+|--------------------------------------------------------------------------
+| AUTH (LOGIN GOOGLE)
+|--------------------------------------------------------------------------
+*/
+Route::get('/login/google', [AuthController::class, 'redirectToGoogle'])
+    ->name('login.google');
+
+Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
 Route::get('/register/complete', [AuthController::class, 'showCompleteRegisterForm'])
     ->name('register.complete');
+
 Route::post('/register/complete', [AuthController::class, 'completeRegister'])
     ->name('register.complete.post');
 
-// EMAIL VERIFICATION
-Route::get('/email/verify', function () {return view('auth.verify-email');})
-    ->middleware('auth')
-    ->name('verification.notice');
+/*
+|--------------------------------------------------------------------------
+| AUTH (LOGIN)
+|--------------------------------------------------------------------------
+*/
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
 
-Route::get('/email/verify/{id}/{hash}', 
-function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/');})
-        ->middleware(['auth', 'signed'])
-        ->name('verification.verify');
+/*
+|--------------------------------------------------------------------------
+| HISTORI PROFILE
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/pesanan-saya', [OrderController::class, 'myOrders'])
+        ->name('orders.my');
+});
 
-// KIRIM ULANG VERIFIKASI EMAIL
-Route::post('/email/verification-notification', 
-function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Link verifikasi sudah dikirim!');})
-        ->middleware(['auth', 'throttle:6,1'])
-        ->name('verification.send');
 
-//route login google
-Route::get('/login/google', [AuthController::class, 'redirectToGoogle'])
-    ->name('login.google');
-Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallback']);
+/*
+|--------------------------------------------------------------------------
+| EMAIL VERIFICATION
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+
+    Route::get('/email/verify', fn () => view('auth.verify-email'))
+        ->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/');
+    })->middleware('signed')->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Link verifikasi sudah dikirim!');
+    })->middleware('throttle:6,1')->name('verification.send');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE + OTP PROFIL (SUDAH LOGIN)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+
+    Route::get('/profile', [ProfileController::class, 'index'])
+        ->name('profile.index');
+
+    Route::post('/profile/update', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::post('/profile/send-otp', [AuthController::class, 'sendOtpFromProfile'])
+        ->name('profile.sendOtp');
+
+    Route::get('/profile/verify-otp', [AuthController::class, 'verifyOtpProfileForm'])
+        ->name('profile.otp.form');
+
+    Route::post('/profile/verify-otp', [AuthController::class, 'verifyOtpProfile'])
+        ->name('profile.otp.verify');
+
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.password.update');
+});
+
+/*
+|--------------------------------------------------------------------------
+| ORDER
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])
+        ->name('orders.update-status');
+});
+
+/*
+|--------------------------------------------------------------------------
+| BOOKING
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/booking/{id}', [BookingController::class, 'index'])
+        ->name('booking');
+
+    Route::post('/booking/store', [BookingController::class, 'store'])
+        ->name('booking.store');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PAYMENT
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/payment/{order}', [PaymentController::class, 'create'])
+        ->name('payment.create');
+
+    Route::post('/payment', [PaymentController::class, 'store'])
+        ->name('payment.store');
+});
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE OTP LAMA
+|--------------------------------------------------------------------------
+*/
 
 //logout admin
 Route::post('/logout', function () {Auth::logout();return redirect('/');})
     ->name('logout');
 
     Route::get('/cetak-order', [OrderController::class, 'printOrder'])->name('print.order');
-Route::get('/cetak-payment', [PaymentController::class, 'printPayment'])->name('print.payment');
+    Route::get('/cetak-payment', [PaymentController::class, 'printPayment'])->name('print.payment');

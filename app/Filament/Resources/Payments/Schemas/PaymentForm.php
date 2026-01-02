@@ -16,9 +16,9 @@ class PaymentForm
     {
         return $schema
             ->components([
-                TextInput::make('order_id')
-                    ->required()
-                    ->numeric(),
+                Placeholder::make('order_id')
+                    ->label('Order ID')
+                    ->content(fn ($record) => $record?->order_id ?? '-'),
                 TextInput::make('amount')
                     ->required()
                     ->numeric(),

@@ -11,19 +11,21 @@
       <div style="background: #00BFFF; padding: 8px; border-radius: 4px; text-align:center;">{{ session('status') }}</div> 
     @endif
 
-    <form method="POST" action="{{ route('password.forgot.send') }}">
+    <form method="POST" action="{{ route('password.email') }}">
         @csrf
-        <input type="email" name="email" placeholder="Email terdaftar" required>
-
-        <button type="submit">
-            Kirim kode OTP
+        <input type="email" name="email" placeholder="masukan Email terdaftar" required>
+        <button class="btn-submit2" type="submit">
+            Kirim link reset password
         </button>
+            @if (session('success'))
+                <p>{{ session('success') }}</p>
+            @endif
     </form>
 
     <p class="login-text">
       <a href="{{ route('login') }}">Kembali ke Login</a>
     </p>
-    
+
   </div>
 </section>
 @endsection

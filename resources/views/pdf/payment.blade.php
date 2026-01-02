@@ -169,9 +169,14 @@
                     @php
                         $status = strtolower($payment->payment_status);
                         $badgeClass = 'badge';
-                        if(in_array($status, ['paid', 'success'])) $badgeClass .= ' status-success';
-                        elseif(in_array($status, ['waiting', 'pending'])) $badgeClass .= ' status-waiting';
-                        else $badgeClass .= ' status-failed';
+
+                        if ($status === 'confirmed') {
+                            $badgeClass .= ' status-success';
+                        } elseif ($status === 'waiting') {
+                            $badgeClass .= ' status-waiting';
+                        } elseif ($status === 'rejected') {
+                            $badgeClass .= ' status-failed';
+                        }
                     @endphp
                     <span class="{{ $badgeClass }}">{{ ucfirst($status) }}</span>
                 </td>
@@ -180,7 +185,7 @@
                 </td>
             </tr>
             @php 
-                if(in_array(strtolower($payment->payment_status), ['paid', 'success'])) {
+                if (strtolower($payment->payment_status) === 'confirmed') {
                     $totalUangMasuk += $payment->amount;
                 }
             @endphp
