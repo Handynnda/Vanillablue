@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Models\Paket;
 
 class Order extends Model
 {
     use HasFactory;
 
+    // Sesuai gambar DB, ID berisi ORD...
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
-        'order_code',
+        'id',
         'customer_id',
         'bundling_id',
         'book_date',
@@ -30,30 +32,18 @@ class Order extends Model
     protected static function boot()
     {
         parent::boot();
-
         static::creating(function ($model) {
-            if (empty($model->order_code)) {
-                $model->order_code = self::generatePrefixedCode('ORD');
+            if (empty($model->id)) {
+                $model->id = 'ORD' . Str::upper(Str::random(7));
             }
         });
     }
 
-    protected static function generatePrefixedCode(string $prefix): string
-    {
-        do {
-            $candidate = $prefix . Str::upper(Str::random(5));
-        } while (self::where('order_code', $candidate)->exists());
-
-        return $candidate;
+    public function bundling() {
+        return $this->belongsTo(Bundling::class, 'bundling_id');
     }
 
-    public function bundling()
-    {
-        return $this->belongsTo(Paket::class, 'bundling_id');
-    }
-
-    public function customer()
-    {
+    public function customer() {
         return $this->belongsTo(User::class, 'customer_id');
     }
 }

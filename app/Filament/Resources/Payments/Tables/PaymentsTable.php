@@ -56,30 +56,7 @@ class PaymentsTable
             ])
             ->recordActions([
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-                
-                Action::make('print_pdf')
-                ->label('Cetak PDF')
-                ->icon('heroicon-o-printer')
-                ->color('success')
-                ->action(function () {
-            
-                    $payments = \App\Models\Payment::with('order')->get();
-            
-                    return response()->streamDownload(
-                        function () use ($payments) {
-                            echo Pdf::loadView('pdf.payments', [
-                                'payments' => $payments,
-                            ])->output();
-                        },
-                        'laporan-payments.pdf'
-                    );
-                }),            
-
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+
     }
 }

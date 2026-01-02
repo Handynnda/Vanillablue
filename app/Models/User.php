@@ -12,9 +12,12 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
-    // public $incrementing = false;
-    // protected $keyType = 'string';
+    // AKTIFKAN INI: Karena ID Anda adalah string (UID...)
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
+        'id', // Pastikan ID ada di sini agar bisa disimpan saat registrasi
         'name',
         'email',
         'password',
@@ -36,23 +39,24 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //     static::creating(function ($model) {
-    //         if (empty($model->id)) {
-    //             $model->id = self::generatePrefixedId('UID');
-    //         }
-    //     });
-    // }
+    // Aktifkan ini jika Anda ingin generate UID otomatis saat pendaftaran baru
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = self::generatePrefixedId('UID');
+            }
+        });
+    }
 
-    // protected static function generatePrefixedId(string $prefix): string
-    // {
-    //     do {
-    //         $candidate = $prefix . Str::upper(Str::random(5));
-    //     } while (self::where('id', $candidate)->exists());
-    //     return $candidate;
-    // }
+    protected static function generatePrefixedId(string $prefix): string
+    {
+        do {
+            $candidate = $prefix . Str::upper(Str::random(7));
+        } while (self::where('id', $candidate)->exists());
+        return $candidate;
+    }
 
     public function orders()
     {

@@ -75,29 +75,7 @@ class OrdersTable
             ])
             ->recordActions([
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-
-                Action::make('print_pdf')
-                ->label('Cetak PDF')
-                ->icon('heroicon-o-printer')
-                ->color('success')
-                ->action(function () {
-                    $orders = Order::with(['customer', 'bundling'])->get();
-            
-                    return response()->streamDownload(
-                        function () use ($orders) {
-                            echo Pdf::loadView('pdf.orders', [
-                                'orders' => $orders,
-                            ])->output();
-                        },
-                        'laporan-order.pdf'
-                    );
-                }),
-            
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+
     }
 }

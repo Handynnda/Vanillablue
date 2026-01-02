@@ -82,11 +82,11 @@ Route::post('/resend-otp', [AuthController::class, 'resendOtp'])
 Route::post('/new-password', [AuthController::class, 'saveNewPassword']);
 
 // BOOKING (pakai ID paket)
-Route::get('/booking/{id}', [BookingController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('booking');
-Route::post('/booking/store', [BookingController::class, 'store'])
-    ->name('booking.store');
+// Bungkus dalam group agar konsisten
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/booking/{id}', [BookingController::class, 'index'])->name('booking');
+    Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+});
 
 // PAYMENT
 Route::get('/payment/{order}', [PaymentController::class, 'create'])
@@ -136,3 +136,6 @@ Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallba
 //logout admin
 Route::post('/logout', function () {Auth::logout();return redirect('/');})
     ->name('logout');
+
+    Route::get('/cetak-order', [OrderController::class, 'printOrder'])->name('print.order');
+Route::get('/cetak-payment', [PaymentController::class, 'printPayment'])->name('print.payment');
