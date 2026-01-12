@@ -72,11 +72,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <a href="#galeri" class="nav-link">Galeri</a>
       <a href="#listharga" class="nav-link">List Harga</a>
       <a href="#kontak" class="nav-link">Kontak</a>
+      <a href="{{ route('profile.index') }}">Profil</a>
     <?php else: ?>
       <a href="/#home" class="nav-link">Beranda</a>
       <a href="/#galeri" class="nav-link">Galeri</a>
       <a href="/#listharga" class="nav-link">List Harga</a>
       <a href="/#kontak" class="nav-link">Kontak</a>
+      <a href="{{ route('profile.index') }}">Profil</a>
     <?php endif; ?>
 
     @guest

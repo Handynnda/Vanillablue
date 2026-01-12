@@ -150,7 +150,7 @@
         
         @forelse ($orders as $index => $order)
         <tr>
-            {{-- Tampilkan semua data (termasuk unpaid) --}}
+            {{-- Tampilkan semua data (termasuk confirmed) --}}
             <td class="col-center">{{ $index + 1 }}</td>
             <td>
                 <strong>{{ $order->customer->name ?? 'Guest' }}</strong><br>
@@ -167,9 +167,9 @@
                     $statusClass = 'badge';
                     $status = strtolower($order->order_status);
                     
-                    if($status == 'success' || $status == 'paid') {
+                    if($status == 'success' || $status == 'completed') {
                         $statusClass .= ' status-success';
-                    } elseif($status == 'pending') {
+                    } elseif($status == 'pending' || $status == 'confirmed') {
                         $statusClass .= ' status-pending';
                     } else {
                         $statusClass .= ' status-cancel';
@@ -183,14 +183,14 @@
                 Rp {{ number_format($order->total_price, 0, ',', '.') }}
                 
                 {{-- Opsi tambahan: Beri tanda kecil jika tidak dihitung --}}
-                @if(strtolower($order->order_status) == 'unpaid')
-                    <br><small style="color: red; font-style: italic;">(Tidak dihitung)</small>
+                @if(strtolower($order->order_status) == 'confirmed')
+                    <br><small style="color: orange; font-style: italic;">(Belum dihitung)</small>
                 @endif
             </td>
         </tr>
 
-        {{-- LOGIKA UTAMA: Hanya tambahkan ke Grand Total jika BUKAN unpaid --}}
-        @if(strtolower($order->order_status) != 'unpaid')
+        {{-- LOGIKA UTAMA: Hanya tambahkan ke Grand Total jika BUKAN confirmed --}}
+        @if(strtolower($order->order_status) != 'confirmed')
             @php $grandTotal += $order->total_price; @endphp
         @endif
 

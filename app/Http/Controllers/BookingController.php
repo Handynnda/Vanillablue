@@ -19,7 +19,7 @@ class BookingController extends Controller
 
         // Ambil jam yang sudah dipesan untuk validasi awal (opsional)
         // Untuk fitur disable yang akurat, sebaiknya dipadukan dengan filter tanggal
-        $bookedSlots = Order::select('book_time', 'book_date')->get();
+        $bookedSlots = Order::select('book_time', 'book_date', 'location')->get();
 
         return view('booking', compact('paket', 'bookedSlots'));
     }
@@ -38,10 +38,11 @@ class BookingController extends Controller
 
         if (!Auth::check()) return redirect()->route('login');
 
-        // Proteksi double booking di sisi server
         $isBooked = Order::where('book_date', $request->tanggal)
-                         ->where('book_time', $request->jam)
-                         ->exists();
+                        ->where('book_time', $request->jam)
+                        ->where('location', $request->tipe)
+                        ->exists();
+
 
         if ($isBooked) {
             return back()->withInput()->with('error', 'Maaf, jam tersebut baru saja dipesan orang lain.');
@@ -55,8 +56,8 @@ class BookingController extends Controller
             'book_date'   => $request->tanggal,
             'book_time'   => $request->jam,
             'location'    => $request->tipe,
-            'order_status'=> 'unpaid',
-            'total_price' => $paket->price_bundling,
+            'order_status'=> 'pending',
+            'total_price' => $paket->price_bundling,    
             'name'        => $request->nama, 
             'phone'       => $request->no_wa,
             'note'        => $request->note,

@@ -37,8 +37,8 @@ class OrderForm
                 TextInput::make('note')
                     ->default(null),
                 Select::make('order_status')
-                    ->options(['unpaid' => 'Unpaid', 'paid' => 'Paid', 'pending' => 'Pending', 'failed' => 'Failed'])
-                    ->default('unpaid')
+                    ->options(['confirmed' => 'Confirmed', 'completed' => 'Completed', 'pending' => 'Pending', 'failed' => 'Failed'])
+                    ->default('pending')
                     ->required(),
                 TextInput::make('total_price')
                     ->required()

@@ -113,12 +113,14 @@
 
                 <div class="field-group">
                     <label for="nama">Nama</label>
-                    <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" value="{{ old('nama') }}" required>
+                    <input type="text" id="nama" name="nama" value="{{ old('nama', Auth::user()->name ?? '') }}" required>
+
                 </div>
 
                 <div class="field-group">
                     <label for="no_wa">Nomor WhatsApp</label>
-                    <input type="text" id="no_wa" name="no_wa" placeholder="Contoh: 0812xxxx" value="{{ old('no_wa') }}" required>
+                    <input type="text" id="no_wa" name="no_wa" value="{{ old('no_wa', Auth::user()->phone ?? '') }}" required>
+
                 </div>
 
                 <div class="field-group">
@@ -144,7 +146,7 @@
 
                 <div class="field-group full">
                     <label for="note">Catatan / Permintaan Khusus (Opsional)</label>
-                    <textarea id="note" name="note" placeholder="Contoh: Tema pastel, bawa properti sendiri, dll">{{ old('note') }}</textarea>
+                    <textarea id="note" name="note" placeholder="Contoh: Permintaan lokasi (outdoor), tema pemotretan, dll">{{ old('note') }}</textarea>
                 </div>
 
                 <div class="booking-actions">
@@ -178,42 +180,56 @@
         });
 
         function renderTimeSlots(date) {
-            timeGrid.innerHTML = ''; 
-            
-            // Filter jam yang sudah penuh di tanggal terpilih
-            // Sesuaikan substring jika format di DB H:i:s (09:00:00)
-            const filledTimes = bookedSlots
-                .filter(slot => slot.book_date === date)
-                .map(slot => slot.book_time.substring(0, 5));
+            timeGrid.innerHTML = '';
+
+            const today = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const nowTime = now.getHours().toString().padStart(2, '0') + ':' +
+                            now.getMinutes().toString().padStart(2, '0');
+
+            const tipe = document.getElementById('tipe').value;
 
             timeOptions.forEach(time => {
                 const slotDiv = document.createElement('div');
                 slotDiv.classList.add('time-slot');
                 slotDiv.innerText = time;
 
-                const isFull = filledTimes.includes(time);
+                const bookings = bookedSlots.filter(slot =>
+                    slot.book_date === date &&
+                    slot.book_time.substring(0,5) === time
+                );
 
-                if (isFull) {
+                const isSameLocationBooked = bookings.some(b => b.location === tipe);
+                const isPastTime = date === today && time <= nowTime;
+
+                if (isSameLocationBooked || isPastTime) {
                     slotDiv.classList.add('full');
-                    slotDiv.innerHTML = `${time}<small>PENUH</small>`;
+                    slotDiv.innerHTML = `${time}<small>${isPastTime ? 'TERLEWAT' : 'PENUH'}</small>`;
                 } else {
-                    // Jika jam terpilih sebelumnya (old value)
-                    if (jamHidden.value === time) {
-                        slotDiv.classList.add('selected');
-                    }
-
-                    slotDiv.onclick = function() {
-                        // Hapus seleksi sebelumnya
+                    slotDiv.onclick = function () {
                         document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
-                        
-                        // Tambah seleksi baru
                         this.classList.add('selected');
                         jamHidden.value = time;
                     };
                 }
+
                 timeGrid.appendChild(slotDiv);
             });
         }
+
+        document.getElementById('tipe').addEventListener('change', function () {
+            jamHidden.value = '';
+            if (tanggalInput.value) {
+                renderTimeSlots(tanggalInput.value);
+            }
+        });
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0');
+        }
+
 
         // Jalankan otomatis jika tanggal sudah terisi (misal saat validasi gagal)
         if (tanggalInput.value) {

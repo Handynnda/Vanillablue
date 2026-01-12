@@ -16,7 +16,7 @@ class StatsOverview extends StatsOverviewWidget
 
         $pendingOrders = Order::where('order_status', 'pending')->count();
 
-        $monthlyRevenue = Order::where('order_status', 'paid')
+        $monthlyRevenue = Order::where('order_status', 'completed')
             ->whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->sum('total_price');

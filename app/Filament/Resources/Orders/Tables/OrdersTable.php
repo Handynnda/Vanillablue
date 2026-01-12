@@ -16,6 +16,8 @@ class OrdersTable
     public static function configure(Table $table): Table
     {
         return $table
+            // Urutkan data terbaru terlebih dahulu & eager load payment untuk hitung sisa
+            ->modifyQueryUsing(fn ($query) => $query->with('payment')->orderByDesc('created_at'))
             ->columns([
                 TextColumn::make('id')
                     ->sortable()
@@ -51,8 +53,9 @@ class OrdersTable
                 TextColumn::make('order_status')
                     ->badge()
                     ->colors([
-                        'warning' => 'unpaid',
-                        'success' => 'paid',
+                        'info'    => 'confirmed',
+                        'success' => 'completed',
+                        'warning' => 'pending',
                         'danger'  => 'failed',
                     ])
                     ->searchable(),
@@ -61,9 +64,26 @@ class OrdersTable
                     ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable(),
 
-                TextColumn::make('sum_order')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('remaining_amount')
+                    ->label('Sisa Pembayaran')
+                    ->state(function (\App\Models\Order $record) {
+                        // Jika order sudah completed, sisa otomatis nol
+                        if ($record->order_status === 'completed') {
+                            return 0.0;
+                        }
+
+                        $total = (float) ($record->total_price ?? 0);
+                        $dp = 0.0;
+                        // Kurangi hanya pembayaran yang sudah dikonfirmasi
+                        if ($record->payment && ($record->payment->payment_status === 'confirmed')) {
+                            $dp = (float) ($record->payment->amount ?? 0);
+                        }
+                        $remaining = max(0, $total - $dp);
+                        return $remaining;
+                    })
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.'))
+                    // Tampilkan merah jika masih ada sisa, hijau jika nol
+                    ->color(fn ($state) => ((float) $state) > 0 ? 'danger' : 'success'),
 
                 TextColumn::make('created_at')
                     ->dateTime()

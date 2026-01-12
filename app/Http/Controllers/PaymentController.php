@@ -39,73 +39,68 @@ class PaymentController extends Controller
     {
         $data = $request->validate([
             'order_id'        => 'required|exists:orders,id',
-            'amount'          => 'required|numeric|min:0',
+            'amount'          => 'required|string',
             'payment_date'    => 'required|date',
             'payment_method'  => 'required|in:bank_a,bank_b,bank_c',
             'proof_image'     => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
-        $order = Order::findOrFail($data['order_id']);
-
-        // Pastikan ID User tidak 0
-        if (!Auth::check() || Auth::id() === 0) {
-            return redirect()->route('login')->with('error', 'Identitas user tidak dikenali.');
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
+
+        $order = Order::findOrFail($data['order_id']);
 
         if ($order->customer_id !== Auth::id()) {
             abort(403);
         }
 
-        $path = null;
-        if ($request->hasFile('proof_image')) {
-            try {
-                $file = $request->file('proof_image');
-                $extension = strtolower($file->getClientOriginalExtension());
-                $basename = uniqid('pay_');
+        $amount = (int) str_replace('.', '', $data['amount']);
+        $minPayment = $order->total_price * 0.5;
 
-                // Menggunakan disk 'cloudinary' sesuai settingan Anda yang berhasil sebelumnya
-                $stored = $file->storeAs(
-                    'payments', 
-                    $basename.'.'.$extension, 
-                    'cloudinary'
-                );
-
-                // Logika pengambilan URL Secure dari Cloudinary
-                $info = pathinfo($stored);
-                $dirname = isset($info['dirname']) ? str_replace('\\', '/', $info['dirname']) : '';
-                $dirname = ($dirname === '.' ? '' : trim($dirname, '/'));
-                $filename = $info['filename'] ?? pathinfo($stored, PATHINFO_FILENAME);
-                $publicId = ($dirname ? $dirname.'/' : '').$filename;
-                
-                try {
-                    $asset = Cloudinary::adminApi()->asset($publicId, ['resource_type' => 'image']);
-                    $path = $asset->offsetGet('secure_url');
-                } catch (\Throwable $e) {
-                    $cloudName = config('cloudinary.cloud_name');
-                    $path = $cloudName ? "https://res.cloudinary.com/{$cloudName}/image/upload/{$publicId}.{$extension}" : $stored;
-                }
-            } catch (\Exception $e) {
-                return back()->with('error', 'Upload bukti gagal: ' . $e->getMessage());
-            }
+        if ($amount < $minPayment) {
+            return back()
+                ->with('error', 'Minimal pembayaran adalah 50% dari total.')
+                ->withInput();
         }
 
-        $paymentCode = 'PYM-' . strtoupper(Str::random(5));
+        // Upload bukti
+        $path = null;
+        if ($request->hasFile('proof_image')) {
+            $file = $request->file('proof_image');
+            $stored = $file->store('payments', 'cloudinary');
 
-        Payment::create([
+            $info = pathinfo($stored);
+            $publicId = ($info['dirname'] !== '.' ? $info['dirname'].'/' : '').$info['filename'];
+
+            $asset = Cloudinary::adminApi()->asset($publicId);
+            $path = $asset['secure_url'];
+        }
+
+        $payment = Payment::create([
             'order_id'       => $order->id,
-            'payment_code'   => $paymentCode,
-            'amount'         => $data['amount'],
+            'payment_code'   => 'PYM-' . strtoupper(Str::random(5)),
+            'amount'         => $amount,
             'payment_status' => 'waiting',
             'payment_date'   => $data['payment_date'],
             'proof_image'    => $path,
             'payment_method' => $data['payment_method']
         ]);
 
-        // Update status order menjadi pending
+        if ($amount > $order->total_price) {
+            return back()
+                ->with('error', 'Jumlah pembayaran melebihi total harga.')
+                ->withInput();
+        }
+
+
         $order->update(['order_status' => 'pending']);
 
-        return redirect('/')->with('success', 'Pembayaran berhasil dikirim, menunggu verifikasi.');
-    }
+        return redirect('/')
+            ->with('payment_success', true)
+            ->with('payment_id', $payment->id);
+    }   
+
 
     /**
      * Cetak Laporan PDF (Admin)
@@ -133,4 +128,17 @@ class PaymentController extends Controller
 
         return $pdf->stream('laporan-pembayaran-' . date('Ymd') . '.pdf');
     }
+
+    public function receipt(Payment $payment)
+    {
+        $payment->load('order');
+
+        if ($payment->order->customer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('payment-receipt', compact('payment'));
+    }
+
+
 }

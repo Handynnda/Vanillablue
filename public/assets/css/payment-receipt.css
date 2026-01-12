@@ -1,0 +1,137 @@
+/* =========================
+   POPUP OVERLAY
+========================= */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+}
+
+/* =========================
+   POPUP CARD
+========================= */
+.popup-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 14px;
+    padding: 24px 22px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    animation: popupFade 0.35s ease;
+}
+
+@keyframes popupFade {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.popup-card h3 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #1f2937;
+}
+
+/* =========================
+   RECEIPT ITEM
+========================= */
+.receipt-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e5e7eb;
+    font-size: 14px;
+}
+
+.receipt-item:last-child {
+    border-bottom: none;
+}
+
+.receipt-item span {
+    color: #6b7280;
+}
+
+.receipt-item strong {
+    color: #111827;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* =========================
+   STATUS
+========================= */
+.status.waiting {
+    color: #d97706;
+    font-weight: 600;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.popup-actions {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.popup-actions button {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.popup-actions button:hover {
+    background: #1e40af;
+}
+
+.popup-actions .btn-link {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 500;
+}
+
+.popup-actions .btn-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 480px) {
+    .popup-card {
+        padding: 20px 16px;
+    }
+
+    .popup-card h3 {
+        font-size: 18px;
+    }
+
+    .receipt-item {
+        font-size: 13px;
+    }
+}

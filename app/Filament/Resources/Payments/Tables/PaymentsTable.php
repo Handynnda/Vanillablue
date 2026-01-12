@@ -16,6 +16,8 @@ class PaymentsTable
     public static function configure(Table $table): Table
     {
         return $table
+            // Urutkan data terbaru terlebih dahulu
+            ->modifyQueryUsing(fn ($query) => $query->orderByDesc('created_at'))
             ->columns([
                 TextColumn::make('order_id')
                     ->numeric()

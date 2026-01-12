@@ -38,8 +38,8 @@ class ListOrders extends ListRecords
                         ->label('Status Order')
                         ->options([
                             'all' => 'Semua Status',
-                            'paid' => 'Paid (Lunas)',
-                            'unpaid' => 'Unpaid (Belum Lunas)',
+                            'completed' => 'Completed (Selesai)',
+                            'confirmed' => 'Confirmed (Dikonfirmasi)',
                             'pending' => 'Pending',
                         ])
                         ->default('all')

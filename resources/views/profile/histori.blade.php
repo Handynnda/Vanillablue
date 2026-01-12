@@ -34,8 +34,8 @@
                                             {{ $order->bundling->name_bundling ?? 'Paket Tidak Ditemukan' }}
                                         </h5>
                                     </div>
-                                    {{-- Kode Pesanan --}}
-                                    <p class="small text-muted mb-2">Kode: #{{ $order->order_code }}</p>
+                                    {{-- ID Order --}}
+                                    <p class="small text-muted mb-2">ID Order: {{ $order->id }}</p>
                                     
                                     {{-- Badges Tanggal & Jam --}}
                                     <div class="d-flex gap-2">
@@ -84,21 +84,32 @@
 
                                 {{-- KOLOM 3: STATUS PEMBAYARAN --}}
                                 <div class="col-md-3 mb-3 mb-md-0 text-md-center">
-                                     @php
-                                        $payment = $order->payment; 
-                                        $payStatus = $payment ? $payment->payment_status : 'pending';
-                                        
-                                        $payTextClass = match($payStatus) {
-                                            'paid' => 'text-success',
-                                            'failed' => 'text-danger',
-                                            default => 'text-warning',
+                                    @php
+                                        $orderStatus = $order->order_status;
+
+                                        // Hitung sisa pembayaran: total harga paket - nominal DP dibayar user (pada Payment)
+                                        $dpAmount = (float) ($order->payment->amount ?? 0);
+                                        $totalPrice = (float) ($order->total_price ?? 0);
+                                        $sisaPembayaran = max(0, $totalPrice - $dpAmount);
+
+                                        // Warna teks berdasarkan status order
+                                        $payTextClass = match($orderStatus) {
+                                            'completed' => 'text-success',
+                                            'confirmed' => 'text-warning',
+                                            'pending' => 'text-warning',
+                                            default => 'text-danger',
                                         };
-                                        
-                                        $payLabel = match($payStatus) {
-                                            'paid' => 'Lunas',
-                                            'failed' => 'Gagal',
-                                            default => 'Belum Dibayar',
-                                        };
+
+                                        // Label pembayaran
+                                        if ($orderStatus === 'completed') {
+                                            $payLabel = 'Lunas';
+                                        } elseif ($orderStatus === 'confirmed') {
+                                            $payLabel = 'Dikonfirmasi — Sisa Pembayaran: Rp ' . number_format($sisaPembayaran, 0, ',', '.');
+                                        } elseif ($orderStatus === 'pending') {
+                                            $payLabel = 'Menunggu Konfirmasi';
+                                        } else {
+                                            $payLabel = 'Tidak Diketahui';
+                                        }
                                     @endphp
                                     
                                     <small class="d-block text-muted mb-1" style="font-size: 0.8rem;">Status Pembayaran</small>

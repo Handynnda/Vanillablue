@@ -7,12 +7,12 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=camera,check_circle,heart_smile" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/payment-receipt.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <style>
     html, body { font-family: 'Poppins', Arial, sans-serif !important; }
@@ -183,6 +183,55 @@
       <a href="https://wa.me/6281338919991" class="btn btn-warning fw-bold px-4">Whatsapp</a>
     </div>
   </div>
+
+
+  {{-- POPUP BUKTI PEMBAYARAN --}}
+  @if(isset($payment) && $payment)
+  <div class="popup-overlay" id="paymentPopup">
+    <div class="popup-card">
+      <h3>Pembayaran Berhasil</h3>
+
+      <div class="receipt-item">
+        <span>ID Pembayaran</span>
+        <strong>{{ $payment->id }}</strong>
+      </div>
+
+      <div class="receipt-item">
+        <span>Paket</span>
+        <strong>{{ $payment->order->bundling->name_bundling }}</strong>
+      </div>
+
+      <div class="receipt-item">
+        <span>Tanggal</span>
+        <strong>
+          {{ \Carbon\Carbon::parse($payment->payment_date)->translatedFormat('d F Y') }}
+        </strong>
+      </div>
+
+      <div class="receipt-item">
+        <span>Jumlah Dibayar</span>
+        <strong>Rp {{ number_format($payment->amount,0,',','.') }}</strong>
+      </div>
+
+      <div class="receipt-item">
+        <span>Status</span>
+        <strong class="status waiting">Menunggu Verifikasi</strong>
+      </div>
+
+      <div class="popup-actions">
+        <button onclick="closePaymentPopup()">OK</button>
+        <a href="{{ url('/pesanan-saya') }}" class="btn-link">Lihat Riwayat</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function closePaymentPopup() {
+    document.getElementById('paymentPopup').style.display = 'none';
+  }
+  </script>
+  @endif
+
 
   @include('footer')
 

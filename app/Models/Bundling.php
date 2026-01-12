@@ -30,4 +30,8 @@ class Bundling extends Model
         if (json_last_error() === JSON_ERROR_NONE && is_array($json)) return $json;
         return array_filter(array_map('trim', preg_split('/[\r\n;,]+/', $raw)));
     }
+        public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

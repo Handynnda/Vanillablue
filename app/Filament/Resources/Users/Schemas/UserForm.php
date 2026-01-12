@@ -20,17 +20,12 @@ class UserForm
                     ->email()
                     ->required(),
                 DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
                 Select::make('role')
                     ->options(['admin' => 'Admin', 'customer' => 'Customer', '' => ''])
                     ->default('customer')
                     ->required(),
                 TextInput::make('phone')
                     ->tel()
-                    ->default(null),
-                TextInput::make('address')
                     ->default(null),
             ]);
     }
