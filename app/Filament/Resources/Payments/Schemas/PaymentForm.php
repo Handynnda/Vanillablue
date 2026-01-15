@@ -81,7 +81,20 @@ class PaymentForm
 
                 Placeholder::make('payment_method')
                     ->label('Metode Pembayaran')
-                    ->content(fn ($record) => $record->payment_method ?? '-'),
+                    ->content(function ($record) {
+                        $state = $record->payment_method ?? '-';
+                        if (str_starts_with($state, 'midtrans_')) {
+                            $method = str_replace('midtrans_', '', $state);
+                            return 'Midtrans (' . ucfirst($method) . ')';
+                        }
+                        return match($state) {
+                            'bank_a' => 'BCA',
+                            'bank_b' => 'DANA',
+                            'bank_c' => 'BRI',
+                            'midtrans' => 'Midtrans',
+                            default => ucfirst($state),
+                        };
+                    }),
 
                 Placeholder::make('payment_date')
                     ->label('Tanggal Pembayaran')
@@ -109,6 +122,21 @@ class PaymentForm
                     ])
                     ->required(),
 
+                // Midtrans Information Section
+                Placeholder::make('midtrans_section')
+                    ->label('Informasi Midtrans')
+                    ->content(fn () => new HtmlString('<hr style="margin: 8px 0; border-color: #e5e7eb;">')),
+
+                Placeholder::make('midtrans_transaction_id')
+                    ->label('Midtrans Transaction ID')
+                    ->content(fn ($record) => $record?->midtrans_transaction_id ?? '-'),
+
+                Placeholder::make('midtrans_transaction_status')
+                    ->label('Midtrans Status')
+                    ->content(fn ($record) => $record?->midtrans_transaction_status 
+                        ? ucfirst($record->midtrans_transaction_status) 
+                        : '-'),
+
                 Placeholder::make('proof_image_preview')
                     ->label('Bukti Pembayaran')
                     ->content(fn ($record) => $record?->proof_image
@@ -119,7 +147,7 @@ class PaymentForm
                                 </a>
                             </div>'
                         )
-                        : new HtmlString('<span class="text-gray-500">Belum ada bukti.</span>')
+                        : new HtmlString('<span class="text-gray-500">Belum ada bukti (Menggunakan Midtrans).</span>')
                     ),
             ];
         });
