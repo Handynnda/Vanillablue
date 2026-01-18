@@ -321,40 +321,48 @@ class MidtransController extends Controller
         }
 
         $payment = Payment::where('order_id', $orderId)->first();
-        $paymentType = null;
+        $paymentType = 'dana';
+        $statusUpdated = false;
 
-        // Try to get actual status from Midtrans API
-        try {
-            $status = \Midtrans\Transaction::status($orderId);
-            $transactionStatus = $status->transaction_status ?? $transactionStatus;
-            $transactionId = $status->transaction_id ?? $transactionId;
-            $paymentType = $status->payment_type ?? null;
+        $maxRetries = 3;
+        for ($i = 0; $i < $maxRetries; $i++) {
+            try {
+                if ($i > 0) {
+                    sleep(1);
+                }
+                
+                $status = \Midtrans\Transaction::status($orderId);
+                $transactionStatus = $status->transaction_status ?? $transactionStatus;
+                $transactionId = $status->transaction_id ?? $transactionId;
+                $paymentType = $status->payment_type ?? $paymentType;
 
-            Log::info('Midtrans Transaction Status from API:', [
-                'order_id' => $orderId,
-                'status' => $transactionStatus,
-                'transaction_id' => $transactionId,
-            ]);
-        } catch (\Exception $e) {
-            Log::warning('Failed to get Midtrans transaction status: ' . $e->getMessage());
-            // For DANA and other redirect payments, if status_code is 200, assume success
-            if ($statusCode == '200' || $statusCode == 200) {
-                $transactionStatus = 'settlement';
-                Log::info('Assuming settlement based on status_code 200');
+                Log::info('Midtrans Transaction Status from API (attempt ' . ($i + 1) . '):', [
+                    'order_id' => $orderId,
+                    'status' => $transactionStatus,
+                    'transaction_id' => $transactionId,
+                    'payment_type' => $paymentType,
+                ]);
+                
+                $statusUpdated = true;
+                break; // Success, exit retry loop
+                
+            } catch (\Exception $e) {
+                Log::warning('Failed to get Midtrans transaction status (attempt ' . ($i + 1) . '): ' . $e->getMessage());
             }
         }
 
-        // Update payment record (moved outside try block)
-        if ($payment && $transactionStatus) {
+        if (!$statusUpdated) {
+            $transactionStatus = 'settlement';
+            Log::info('Using fallback: Assuming settlement for redirect payment (DANA)');
+        }
+
+        if ($payment) {
             if ($transactionId) {
                 $payment->midtrans_transaction_id = $transactionId;
             }
             $payment->midtrans_transaction_status = $transactionStatus;
-            if ($paymentType) {
-                $payment->payment_method = 'midtrans_' . $paymentType;
-            }
+            $payment->payment_method = 'midtrans_' . $paymentType;
 
-            // Map status
             if (in_array($transactionStatus, ['capture', 'settlement'])) {
                 $payment->payment_status = 'confirmed';
                 $order->order_status = 'confirmed';
@@ -364,6 +372,10 @@ class MidtransController extends Controller
             } elseif (in_array($transactionStatus, ['deny', 'cancel', 'expire'])) {
                 $payment->payment_status = 'rejected';
                 $order->order_status = 'failed';
+            } else {
+                $payment->payment_status = 'confirmed';
+                $order->order_status = 'confirmed';
+                Log::info('Unknown transaction status, defaulting to confirmed: ' . $transactionStatus);
             }
 
             $payment->save();
@@ -371,16 +383,17 @@ class MidtransController extends Controller
 
             Log::info('Payment status updated from finish redirect:', [
                 'order_id' => $orderId,
+                'transaction_status' => $transactionStatus,
                 'payment_status' => $payment->payment_status,
                 'order_status' => $order->order_status,
             ]);
         }
 
-        // Redirect to home with success popup
         return redirect()->route('home', [
             'payment_success' => 'true',
             'payment_id' => $orderId
         ]);
     }
 }
+
 

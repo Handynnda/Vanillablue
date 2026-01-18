@@ -48,19 +48,6 @@ class PaymentForm
                     DatePicker::make('payment_date')
                         ->label('Tanggal Pembayaran')
                         ->required(),
-
-                    Placeholder::make('proof_image_preview')
-                        ->label('Bukti Pembayaran')
-                        ->content(fn ($get) => $get('proof_image')
-                            ? new HtmlString(
-                                '<div style="margin-top:8px">
-                                    <a href="'.e($get('proof_image')).'" target="_blank" rel="noopener">
-                                        <img src="'.e($get('proof_image')).'" style="max-width:100%;border-radius:8px">
-                                    </a>
-                                </div>'
-                            )
-                            : new HtmlString('<span class="text-gray-500">Belum ada bukti.</span>')
-                        ),
                 ];
             }
 
@@ -123,9 +110,6 @@ class PaymentForm
                     ->required(),
 
                 // Midtrans Information Section
-                Placeholder::make('midtrans_section')
-                    ->label('Informasi Midtrans')
-                    ->content(fn () => new HtmlString('<hr style="margin: 8px 0; border-color: #e5e7eb;">')),
 
                 Placeholder::make('midtrans_transaction_id')
                     ->label('Midtrans Transaction ID')
@@ -136,19 +120,6 @@ class PaymentForm
                     ->content(fn ($record) => $record?->midtrans_transaction_status 
                         ? ucfirst($record->midtrans_transaction_status) 
                         : '-'),
-
-                Placeholder::make('proof_image_preview')
-                    ->label('Bukti Pembayaran')
-                    ->content(fn ($record) => $record?->proof_image
-                        ? new HtmlString(
-                            '<div style="margin-top:8px">
-                                <a href="'.e($record->proof_image).'" target="_blank" rel="noopener">
-                                    <img src="'.e($record->proof_image).'" style="max-width:100%;border-radius:8px">
-                                </a>
-                            </div>'
-                        )
-                        : new HtmlString('<span class="text-gray-500">Belum ada bukti (Menggunakan Midtrans).</span>')
-                    ),
             ];
         });
     }

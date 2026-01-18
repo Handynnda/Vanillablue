@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\Payments;
 
-use App\Filament\Resources\Payments\Pages\CreatePayment;
-use App\Filament\Resources\Payments\Pages\EditPayment;
 use App\Filament\Resources\Payments\Pages\ListPayments;
+use App\Filament\Resources\Payments\Pages\ViewPayment;
 use App\Filament\Resources\Payments\Schemas\PaymentForm;
 use App\Filament\Resources\Payments\Tables\PaymentsTable;
 use App\Models\Payment;
@@ -43,8 +42,12 @@ class PaymentResource extends Resource
     {
         return [
             'index' => ListPayments::route('/'),
-            'create' => CreatePayment::route('/create'),
-            'edit' => EditPayment::route('/{record}/edit'),
+            'view' => ViewPayment::route('/{record}'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }
