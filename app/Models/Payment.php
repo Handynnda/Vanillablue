@@ -21,7 +21,10 @@ class Payment extends Model
         'payment_status',
         'payment_method',
         'payment_date',
-        'proof_image'
+        'proof_image',
+        'snap_token',
+        'midtrans_transaction_id',
+        'midtrans_transaction_status',
     ];
 
     protected static function boot()

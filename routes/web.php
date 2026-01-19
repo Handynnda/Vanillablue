@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MidtransController;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -226,3 +227,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/cetak-payment', [PaymentController::class, 'printPayment'])
         ->name('print.payment');
 });
+
+/*
+|--------------------------------------------------------------------------
+| MIDTRANS
+|--------------------------------------------------------------------------
+*/
+// Generate Snap Token (requires authentication)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/midtrans/snap-token', [MidtransController::class, 'getSnapToken'])
+        ->name('midtrans.snap-token');
+    
+    // Client-side callback to update payment status (fallback for webhook)
+    Route::post('/midtrans/update-status', [MidtransController::class, 'updatePaymentStatus'])
+        ->name('midtrans.update-status');
+});
+
+// Finish redirect handler (for redirect-based payments like DANA)
+// Must be GET and accessible without auth (user might have different session after redirect)
+Route::get('/midtrans/finish', [MidtransController::class, 'handleFinish'])
+    ->name('midtrans.finish');
+
+// Midtrans Notification Webhook (no auth - accessed by Midtrans server)
+Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification'])
+    ->name('midtrans.notification');
