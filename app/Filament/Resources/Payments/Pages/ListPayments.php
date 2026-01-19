@@ -14,10 +14,7 @@ class ListPayments extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            // 1. Tombol Create Bawaan
-            Actions\CreateAction::make(),
-
-            // 2. Tombol Cetak Laporan
+            // Tombol Cetak Laporan
             Actions\Action::make('cetak_laporan')
                 ->label('Cetak PDF')
                 ->icon('heroicon-o-printer')

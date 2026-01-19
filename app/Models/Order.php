@@ -23,6 +23,7 @@ class Order extends Model
         'location',
         'note',
         'order_status',
+        'google_drive_link',
         'total_price',
         'sum_order',
         'name',

@@ -22,7 +22,7 @@
                 {{-- Menggunakan @forelse untuk menangani jika data ada atau kosong --}}
                 @forelse ($orders as $order)
                     
-                    <div class="card border-0 shadow-sm mb-3 rounded-3 overflow-hidden">
+                    <div class="card border-0 shadow-sm mb-3 rounded-3 overflow-hidden bg-white" style="background: #fff !important;">
                         <div class="card-body p-4">
                             <div class="row align-items-center">
                                 
@@ -118,7 +118,20 @@
                                         {{ $payLabel }}
                                     </span>
                                 </div>
-                            </div>
+
+                                {{-- KOLOM 4: HASIL FOTO (GOOGLE DRIVE LINK) --}}
+                                @if($order->order_status === 'completed' && $order->google_drive_link)
+                                <div class="col-md-2 mb-3 mb-md-0 text-md-center">
+                                    <small class="d-block text-muted mb-2" style="font-size: 0.8rem;">Hasil Foto</small>
+                                    <a href="{{ $order->google_drive_link }}" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer"
+                                       class="btn btn-success btn-sm">
+                                        <i class="fas fa-images me-1"></i>
+                                        Lihat Hasil Foto
+                                    </a>
+                                </div>
+                                @endif
                         </div>
                     </div>
 

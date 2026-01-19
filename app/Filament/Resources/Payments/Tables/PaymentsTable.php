@@ -72,9 +72,6 @@ class PaymentsTable
                     ->date()
                     ->sortable()
                     ->searchable(),
-                ImageColumn::make('proof_image')
-                    ->label('Bukti')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -88,7 +85,8 @@ class PaymentsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                \Filament\Actions\ViewAction::make()
+                    ->label('Lihat'),
             ]);
 
     }

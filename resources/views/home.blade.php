@@ -215,7 +215,7 @@
 
       <div class="receipt-item">
         <span>Status</span>
-        <strong class="status waiting">Menunggu Verifikasi</strong>
+        <strong class="status waiting">{{ $payment->payment_status }}</strong>
       </div>
 
       <div class="popup-actions">
