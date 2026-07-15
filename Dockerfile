@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
+        pdo_pgsql \
+        pgsql \
         intl \
         zip \
     && apt-get clean \
@@ -33,10 +35,21 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Install dependency Laravel
 RUN composer install --no-dev --optimize-autoloader
 
+# Buat folder yang diperlukan Laravel
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache
+
 # Storage link
 RUN php artisan storage:link || true
 
-# Permission
+# Berikan ownership ke Apache
+RUN chown -R www-data:www-data /var/www/html
+
+# Berikan permission
 RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
