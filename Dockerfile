@@ -4,19 +4,39 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN docker-php-ext-install pdo pdo_mysql
+# Install library yang dibutuhkan
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    && docker-php-ext-install \
+        pdo \
+        pdo_mysql \
+        intl \
+        zip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
+# Enable Apache Rewrite
 RUN a2enmod rewrite
 
-RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+# Set DocumentRoot ke folder public Laravel
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' \
+    /etc/apache2/sites-available/000-default.conf
 
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Install dependency Laravel
 RUN composer install --no-dev --optimize-autoloader
 
+# Storage link
 RUN php artisan storage:link || true
 
+# Permission
 RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
