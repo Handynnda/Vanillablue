@@ -30,15 +30,15 @@ class BundlingController extends Controller
             $query->where(function($q) use ($activeLabel, $activeSlug) {
                 $q->where('category', $activeLabel)
                   ->orWhereRaw('LOWER(category) = ?', [Str::lower($activeLabel)])
-                  ->orWhereRaw('REPLACE(LOWER(category)," ", "-") = ?', [$activeSlug])
-                  ->orWhereRaw('REPLACE(LOWER(name_bundling)," ", "-") = ?', [$activeSlug]);
+                  ->orWhereRaw("REPLACE(LOWER(category), ' ', '-') = ?", [$activeSlug])
+                  ->orWhereRaw("REPLACE(LOWER(name_bundling), ' ', '-') = ?", [$activeSlug]);
             });
         } elseif (Schema::hasColumn('bundlings','category_bundling')) {
             $query->where(function($q) use ($activeLabel, $activeSlug) {
                 $q->where('category_bundling', $activeLabel)
                   ->orWhereRaw('LOWER(category_bundling) = ?', [Str::lower($activeLabel)])
-                  ->orWhereRaw('REPLACE(LOWER(category_bundling)," ", "-") = ?', [$activeSlug])
-                  ->orWhereRaw('REPLACE(LOWER(name_bundling)," ", "-") = ?', [$activeSlug]);
+                  ->orWhereRaw("REPLACE(LOWER(category_bundling), ' ', '-') = ?", [$activeSlug])
+                  ->orWhereRaw("REPLACE(LOWER(name_bundling), ' ', '-') = ?", [$activeSlug]);
             });
         } else {
 
