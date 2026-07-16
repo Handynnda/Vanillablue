@@ -8,6 +8,7 @@ COPY . .
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libzip-dev \
+    libpq-dev \
     zip \
     unzip \
     git \
@@ -15,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
+        pdo_pgsql \
         intl \
         zip \
     && apt-get clean \
